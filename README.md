@@ -45,3 +45,12 @@ python3 -m http.server 8080
 ```
 
 Then open `http://127.0.0.1:8080/`.
+
+## Canonical runtime
+
+The static site is served by Caddy from the Telos Lightsail instance. A hardened
+oneshot reconciler reads the three public source manifests directly over HTTPS;
+its persistent systemd timer runs daily and a bounded propagation event may
+start the same service sooner. The complete source set must validate before the
+archive file is atomically replaced. GitHub stores reviewed source and history
+only.

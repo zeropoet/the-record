@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily reconciliation of The Record sound archive
+
+[Timer]
+OnCalendar=*-*-* 04:17:00 America/New_York
+RandomizedDelaySec=30m
+Persistent=true
+Unit=the-record-sync.service
+
+[Install]
+WantedBy=timers.target

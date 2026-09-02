@@ -1,0 +1,22 @@
+[Unit]
+Description=Reconcile public sound manifests into The Record
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/the-record/current
+ExecStart=/usr/bin/python3 /var/www/the-record/current/scripts/sync_sources.py
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/www/the-record/current/archive
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+
