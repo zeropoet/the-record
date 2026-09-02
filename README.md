@@ -33,6 +33,10 @@ customer data, unpublished work, and free-form instructions are prohibited.
 
 ```sh
 node scripts/validate.mjs
+python3 scripts/sync_sources.py \
+  --local foldforge=/path/to/FoldForge/public/record-sound-archive.json \
+  --local root-logos=/path/to/root-logos/content/record-sound-archive.json \
+  --local telos=/path/to/Telos/public/record-sound-archive.json
 node scripts/sync-sources.mjs \
   --local foldforge=/path/to/FoldForge/public/record-sound-archive.json \
   --local root-logos=/path/to/root-logos/content/record-sound-archive.json \
