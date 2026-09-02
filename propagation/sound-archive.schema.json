@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://record.zeropoet.xyz/propagation/sound-archive.schema.json",
+  "title": "The Record sound archive receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "source", "source_sha", "manifest_url", "occurred_at"],
+  "properties": {
+    "schema": { "const": "the-record-propagation/v1" },
+    "source": { "enum": ["foldforge", "root-logos", "telos", "sovereign-standard", "foldportrait", "foldkernel"] },
+    "source_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "manifest_url": { "type": "string", "pattern": "^https://" },
+    "occurred_at": { "type": "string", "format": "date-time" }
+  }
+}

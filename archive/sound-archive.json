@@ -1,0 +1,222 @@
+{
+  "schema": "zeropoet-sound-archive/v1",
+  "archive": "The Record",
+  "canonical_url": "https://record.zeropoet.xyz/",
+  "principle": "Sources remain sovereign. The Record indexes their relations without copying authority or media.",
+  "updated_at": "2026-09-02T21:34:29.432Z",
+  "sources": [
+    {
+      "source_id": "foldforge",
+      "authority": "FoldForge",
+      "canonical_url": "https://foldforge.zeropoet.xyz/"
+    },
+    {
+      "source_id": "root-logos",
+      "authority": "Root Logos",
+      "canonical_url": "https://rootlogos.com/"
+    },
+    {
+      "source_id": "telos",
+      "authority": "Telos",
+      "canonical_url": "https://telos.zeropoet.xyz/"
+    }
+  ],
+  "entries": [
+    {
+      "id": "foldforge-resonant-holdings",
+      "title": "Resonant Holdings",
+      "branch": "FoldForge",
+      "kind": "compositional grammar",
+      "availability": "public structure",
+      "source": {
+        "repository": "zeropoet/FoldForge",
+        "path": "grammar/composition-003-resonance.json",
+        "url": "https://foldforge.zeropoet.xyz/"
+      },
+      "sound": {
+        "rootHz": 73.42,
+        "ratios": [
+          1,
+          1.5,
+          2.25
+        ],
+        "waves": [
+          "sine",
+          "triangle",
+          "sine"
+        ],
+        "cutoffHz": 1480
+      }
+    },
+    {
+      "id": "foldforge-sonic-forge",
+      "title": "Sonic Forge / Steel Voice",
+      "branch": "FoldForge",
+      "kind": "deterministic instrument",
+      "availability": "public instrument",
+      "source": {
+        "repository": "zeropoet/FoldForge",
+        "path": "app/sonic-forge",
+        "url": "https://foldforge.zeropoet.xyz/sonic-forge"
+      },
+      "sound": {
+        "rootHz": 58.27,
+        "ratios": [
+          1,
+          2.01,
+          3.99,
+          6.02
+        ],
+        "waves": [
+          "sine",
+          "triangle",
+          "triangle",
+          "sine"
+        ],
+        "cutoffHz": 2240
+      }
+    },
+    {
+      "id": "foldforge-sound-composition-1-source",
+      "title": "FoldForge Sound Composition 1 / Source",
+      "branch": "FoldForge / Source Recordings",
+      "kind": "source recording",
+      "availability": "local canonical file",
+      "duration_seconds": 263.68,
+      "sha256": "e20608a85edb5d1ae6962edfe7141e30ce535a74f5da44d472346fdac66ccc68",
+      "source": {
+        "repository": "zeropoet/FoldForge",
+        "path": "private source library / zeropoet_foldforge_sound-comp-1.m4a",
+        "url": "https://foldforge.zeropoet.xyz/sonic-forge"
+      }
+    },
+    {
+      "id": "foldforge-sound-composition-2-source",
+      "title": "FoldForge Sound Composition 2 / Source",
+      "branch": "FoldForge / Source Recordings",
+      "kind": "audio-bearing source",
+      "availability": "local canonical file",
+      "duration_seconds": 723.301066,
+      "sha256": "4c0e049b3ea5856e5b1da0b0ee7da34f5a64f56ead338eda34c82fa194aeef5f",
+      "source": {
+        "repository": "zeropoet/FoldForge",
+        "path": "private source library / zeropoet_foldforge_sound-comp-2.mov",
+        "url": "https://foldforge.zeropoet.xyz/sonic-forge"
+      }
+    },
+    {
+      "id": "sonic-forge-0010-blue-ridge-1",
+      "title": "Sonic Forge 0010 / Blue Ridge 1",
+      "branch": "FoldForge / Blue Ridge",
+      "kind": "preserved master",
+      "availability": "local canonical file",
+      "duration_seconds": 189.269333,
+      "sha256": "1952dd8b124e5b85ee72d1b2bee0fde89ac35c7f847847646734033bb3f39986",
+      "source": {
+        "repository": "zeropoet/FoldForge",
+        "path": "Sonic Forge private library / Sonic-Forge-0010-BlueRidge-1-master.wav",
+        "url": "https://foldforge.zeropoet.xyz/sonic-forge"
+      }
+    },
+    {
+      "id": "sonic-forge-0011-blue-ridge-2",
+      "title": "Sonic Forge 0011 / Blue Ridge 2",
+      "branch": "FoldForge / Blue Ridge",
+      "kind": "preserved master",
+      "availability": "local canonical file",
+      "duration_seconds": 113.664,
+      "sha256": "0057c05a823f7d0a5dbbad566341ea198703c627d2b6e6a167d0ef5aae6ff329",
+      "source": {
+        "repository": "zeropoet/FoldForge",
+        "path": "Sonic Forge private library / Sonic-Forge-0011-BlueRidge-2-master.wav",
+        "url": "https://foldforge.zeropoet.xyz/sonic-forge"
+      }
+    },
+    {
+      "id": "sonic-forge-0012-blue-ridge-3",
+      "title": "Sonic Forge 0012 / Blue Ridge 3",
+      "branch": "FoldForge / Blue Ridge",
+      "kind": "preserved master",
+      "availability": "local canonical file",
+      "duration_seconds": 55.296,
+      "sha256": "7cf3730b289340d473775269996bd0e1ce150ae32b2be34f70b94ac5db1de88d",
+      "source": {
+        "repository": "zeropoet/FoldForge",
+        "path": "Sonic Forge private library / Sonic-Forge-0012-BlueRidge-3-master.wav",
+        "url": "https://foldforge.zeropoet.xyz/sonic-forge"
+      }
+    },
+    {
+      "id": "sonic-forge-0013-blue-ridge-4",
+      "title": "Sonic Forge 0013 / Blue Ridge 4",
+      "branch": "FoldForge / Blue Ridge",
+      "kind": "preserved master",
+      "availability": "local canonical file",
+      "duration_seconds": 617.472,
+      "sha256": "4c56b5e3ba2f23dc806372ac1dfebf305344fca482827e3c9ce55809fefe292a",
+      "source": {
+        "repository": "zeropoet/FoldForge",
+        "path": "Sonic Forge private library / Sonic-Forge-0013-BlueRidge-4-master.wav",
+        "url": "https://foldforge.zeropoet.xyz/sonic-forge"
+      }
+    },
+    {
+      "id": "root-logos-resonant-chamber",
+      "title": "The Resonant Chamber",
+      "branch": "Root Logos",
+      "kind": "constitutional voice",
+      "availability": "public instrument",
+      "source": {
+        "repository": "zeropoet/root-logos",
+        "path": "resonance/grammar.json",
+        "url": "https://rootlogos.com/#resonance"
+      },
+      "sound": {
+        "rootHz": 55,
+        "ratios": [
+          1,
+          1.125,
+          1.333333,
+          1.5
+        ],
+        "waves": [
+          "sine",
+          "triangle",
+          "sine",
+          "sine"
+        ],
+        "cutoffHz": 1260
+      }
+    },
+    {
+      "id": "telos-living-system-voice",
+      "title": "The Living System / Interior Voice",
+      "branch": "Telos",
+      "kind": "procedural voice",
+      "availability": "public instrument",
+      "source": {
+        "repository": "zeropoet/Telos",
+        "path": "public/living-object.js",
+        "url": "https://telos.zeropoet.xyz/"
+      },
+      "sound": {
+        "rootHz": 61,
+        "ratios": [
+          1,
+          1.5,
+          2.01,
+          3.02,
+          4.49
+        ],
+        "waves": [
+          "sine",
+          "sine",
+          "triangle",
+          "triangle",
+          "triangle"
+        ],
+        "cutoffHz": 1100
+      }
+    }
+  ]
+}

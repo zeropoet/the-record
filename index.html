@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="The Record is the navigable sound archive of the Zeropoet studio.">
+  <meta name="theme-color" content="#050505">
+  <meta property="og:title" content="The Record — Zeropoet">
+  <meta property="og:description" content="Preserved recordings, deterministic voices, and compositional structures held across the Zeropoet studio.">
+  <meta property="og:url" content="https://record.zeropoet.xyz/">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://record.zeropoet.xyz/">
+  <link rel="icon" href="assets/sovereign-standard-record-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>The Record — Zeropoet</title>
+</head>
+<body>
+  <header class="site-header">
+    <a class="identity" href="https://zeropoet.xyz/" aria-label="Return to Zeropoet">
+      <img src="assets/sovereign-standard-record-mark.svg" alt="">
+    </a>
+    <p>The Record</p>
+    <button id="listen" type="button" aria-pressed="false">Listen</button>
+  </header>
+
+  <main>
+    <section class="instrument" aria-labelledby="record-title">
+      <div class="declaration">
+        <p class="eyebrow">Sound Archive / Compositional Field</p>
+        <h1 id="record-title">Every sound remains<br>where it was made.</h1>
+        <p class="lede">Here, their relations can be heard.</p>
+      </div>
+
+      <div class="field-wrap">
+        <canvas id="field" tabindex="0" aria-label="Navigable map of archived sound structures"></canvas>
+        <div class="field-state" aria-live="polite">
+          <span id="field-label">Move through the field</span>
+          <span id="timecode">00:00:00</span>
+        </div>
+      </div>
+
+      <div class="assembly" aria-labelledby="assembly-title">
+        <header>
+          <div>
+            <p class="eyebrow">Open Assembly / 001</p>
+            <h2 id="assembly-title">A provisional way to compose.</h2>
+          </div>
+          <button id="clear" type="button">Clear</button>
+        </header>
+        <p id="assembly-empty">Select any sounding structure in the archive. Each addition changes one shared field; no source is overwritten.</p>
+        <ol id="assembly-list" aria-label="Selected sound structures"></ol>
+      </div>
+    </section>
+
+    <section class="archive" aria-labelledby="archive-title">
+      <header class="archive-header">
+        <div>
+          <p class="eyebrow">Canonical Index</p>
+          <h2 id="archive-title">The archive is distributed.</h2>
+        </div>
+        <p><span id="record-count">0</span> structures<br><span id="branch-count">0</span> source branches</p>
+      </header>
+      <div id="archive-list" class="archive-list"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Sources remain sovereign. Relations remain revisable.</p>
+    <a href="archive/sound-archive.json">Machine-readable record</a>
+  </footer>
+
+  <noscript>The Record requires JavaScript to sound and draw its archive. Its machine-readable index remains available.</noscript>
+  <script type="module" src="record.js"></script>
+</body>
+</html>
