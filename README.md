@@ -6,6 +6,16 @@ preserved masters, deterministic instruments, procedural voices, and
 compositional grammars without moving their canonical files or absorbing the
 authority of the systems that made them.
 
+The public [`foldkernel-integration.json`](foldkernel-integration.json) joins
+The Record to the same exact FoldKernel `1.0.5` / protocol `1.0.0` contract
+already held by FoldForge, FoldPortrait, Root Logos, and Sovereign Standard.
+The Record projects source identities through FoldKernel's canonical square,
+eight symmetries, and adjacency grammar to produce stable positions and a wider
+relational mesh. That projection may deepen the local synthesized listening
+field, but it never changes a master recording, source witness, or archive
+authority. Application-level hashes are not presented as FoldKernel convergence
+hashes.
+
 ## Boundary
 
 - Source media remains in its originating repository or private source library.
@@ -33,6 +43,7 @@ customer data, unpublished work, and free-form instructions are prohibited.
 
 ```sh
 node scripts/validate.mjs
+node scripts/record-kernel.test.mjs
 python3 scripts/sync_sources.py \
   --local foldforge=/path/to/FoldForge/public/record-sound-archive.json \
   --local root-logos=/path/to/root-logos/content/record-sound-archive.json \

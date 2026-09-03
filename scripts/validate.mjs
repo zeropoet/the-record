@@ -1,4 +1,5 @@
 import { readFile, access } from "node:fs/promises";
+import { FOLDKERNEL } from "../record-kernel.js";
 
 const catalog = JSON.parse(await readFile(new URL("../archive/sound-archive.json", import.meta.url), "utf8"));
 if (catalog.schema !== "zeropoet-sound-archive/v1") throw new Error("Unexpected archive schema");
@@ -12,4 +13,8 @@ for (const entry of catalog.entries) {
   if (entry.availability === "local canonical file" && !/^[0-9a-f]{64}$/.test(entry.sha256 || "")) throw new Error(`${entry.id} is missing its SHA-256 witness`);
 }
 for (const path of ["../index.html", "../styles.css", "../record.js", "../assets/sovereign-standard-record-mark.svg"]) await access(new URL(path, import.meta.url));
+const declaration = JSON.parse(await readFile(new URL("../foldkernel-integration.json", import.meta.url), "utf8"));
+if (declaration.contractVersion !== FOLDKERNEL.contractVersion) throw new Error("FoldKernel contract drift");
+if (declaration.foldKernel.protocolVersion !== FOLDKERNEL.protocolVersion || declaration.foldKernel.packageRequirement.version !== FOLDKERNEL.packageVersion) throw new Error("FoldKernel version drift");
+if (declaration.consumer.publicManifestURL !== "https://record.zeropoet.xyz/foldkernel-integration.json") throw new Error("FoldKernel public manifest URL drift");
 console.log(`Validated ${catalog.entries.length} sound structures across ${new Set(catalog.entries.map(({ branch }) => branch)).size} branches.`);

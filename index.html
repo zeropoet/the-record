@@ -19,24 +19,24 @@
     <a class="identity" href="https://zeropoet.xyz/" aria-label="Return to Zeropoet">
       <img src="assets/sovereign-standard-record-mark.svg" alt="">
     </a>
-    <p>The Record</p>
+    <h1>The Record</h1>
     <button id="listen" type="button" aria-pressed="false">Listen</button>
   </header>
 
   <main>
-    <section class="instrument" aria-labelledby="record-title">
-      <div class="declaration">
-        <p class="eyebrow">Sound Archive / Compositional Field</p>
-        <h1 id="record-title">Every sound remains<br>where it was made.</h1>
-        <p class="lede">Here, their relations can be heard.</p>
-      </div>
-
+    <section class="instrument" aria-label="The Record sound archive and compositional field">
       <div class="field-wrap">
         <canvas id="field" tabindex="0" aria-label="Navigable map of archived sound structures"></canvas>
         <div class="field-state" aria-live="polite">
           <span id="field-label">Move through the field</span>
+          <span id="kernel-label">FoldKernel 1.0.5 / awaiting archive</span>
           <span id="timecode">00:00:00</span>
         </div>
+      </div>
+
+      <div class="record-statement">
+        <p class="eyebrow">Sound Archive / Compositional Field</p>
+        <p>Every sound remains<br>where it was made.</p>
       </div>
 
       <div class="assembly" aria-labelledby="assembly-title">
