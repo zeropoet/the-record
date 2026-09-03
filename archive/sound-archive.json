@@ -3,7 +3,7 @@
   "archive": "The Record",
   "canonical_url": "https://record.zeropoet.xyz/",
   "principle": "Sources remain sovereign. The Record indexes their relations without copying authority or media.",
-  "updated_at": "2026-09-02T21:34:29.432Z",
+  "updated_at": "2026-09-03T18:46:28.802058Z",
   "sources": [
     {
       "source_id": "foldforge",
@@ -19,6 +19,11 @@
       "source_id": "telos",
       "authority": "Telos",
       "canonical_url": "https://telos.zeropoet.xyz/"
+    },
+    {
+      "source_id": "ovel",
+      "authority": "\u00d8VEL",
+      "canonical_url": "https://ovel.zeropoet.xyz/"
     }
   ],
   "entries": [
@@ -216,6 +221,42 @@
           "triangle"
         ],
         "cutoffHz": 1100
+      }
+    },
+    {
+      "id": "ovel-spectral-gravity-field",
+      "title": "Spectral Gravity Field",
+      "branch": "\u00d8VEL",
+      "kind": "procedural spatial instrument",
+      "availability": "public instrument",
+      "source": {
+        "repository": "zeropoet/ovel-core",
+        "path": "sound.js",
+        "url": "https://ovel.zeropoet.xyz/"
+      },
+      "sound": {
+        "voices": 3,
+        "waves": [
+          "sine",
+          "triangle",
+          "sawtooth"
+        ],
+        "intervals": [
+          0,
+          7,
+          14
+        ],
+        "rootMidiRange": [
+          38,
+          49
+        ],
+        "fieldInputs": [
+          "RGB energy",
+          "orbital radius",
+          "velocity",
+          "structural memory"
+        ],
+        "spatialization": "stereo gravity field with regenerative delay"
       }
     }
   ]

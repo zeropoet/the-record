@@ -3,6 +3,7 @@
   "sources": [
     { "id": "foldforge", "manifest_url": "https://foldforge.zeropoet.xyz/record-sound-archive.json" },
     { "id": "root-logos", "manifest_url": "https://rootlogos.com/content/record-sound-archive.json" },
-    { "id": "telos", "manifest_url": "https://telos.zeropoet.xyz/record-sound-archive.json" }
+    { "id": "telos", "manifest_url": "https://telos.zeropoet.xyz/record-sound-archive.json" },
+    { "id": "ovel", "manifest_url": "https://ovel.zeropoet.xyz/record-sound-archive.json" }
   ]
 }
