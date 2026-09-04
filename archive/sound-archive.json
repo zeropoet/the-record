@@ -3,7 +3,7 @@
   "archive": "The Record",
   "canonical_url": "https://record.zeropoet.xyz/",
   "principle": "Sources remain sovereign. The Record indexes their relations without copying authority or media.",
-  "updated_at": "2026-09-04T14:42:48.160225Z",
+  "updated_at": "2026-09-04T14:49:04.017208Z",
   "sources": [
     {
       "source_id": "foldforge",
@@ -236,10 +236,16 @@
       },
       "sound": {
         "voices": 3,
+        "seed": 3165167791,
+        "frequenciesHz": [
+          146.832,
+          220,
+          329.628
+        ],
         "waves": [
-          "sine",
           "triangle",
-          "sawtooth"
+          "sawtooth",
+          "sine"
         ],
         "intervals": [
           0,
@@ -250,6 +256,9 @@
           38,
           49
         ],
+        "filterType": "bandpass",
+        "cutoffHz": 1580,
+        "resonance": 9,
         "fieldInputs": [
           "RGB energy",
           "orbital radius",

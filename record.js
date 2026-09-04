@@ -14,6 +14,7 @@ const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const state = { catalog: null, nodes: [], edges: [], layout: null, selected: new Set(), hover: -1, pointer: { x: 0, y: 0 }, started: performance.now() };
 let audio;
+const isPlayable = (entry) => Boolean(entry.sound && (entry.sound.rootHz || entry.sound.frequenciesHz?.length));
 
 class RecordAudio {
   constructor() { this.context = null; this.output = null; this.voices = new Map(); this.awake = false; }
@@ -24,13 +25,13 @@ class RecordAudio {
     await this.context.resume();
     if (!this.output) {
       const compressor = this.context.createDynamicsCompressor();
-      compressor.threshold.value = -24; compressor.ratio.value = 3; compressor.attack.value = .08; compressor.release.value = .7;
+      compressor.threshold.value = -20; compressor.knee.value = 16; compressor.ratio.value = 4.5; compressor.attack.value = .06; compressor.release.value = .65;
       this.output = this.context.createGain(); this.output.gain.value = .0001;
       this.output.connect(compressor).connect(this.context.destination);
     }
     this.awake = true;
     this.output.gain.cancelScheduledValues(this.context.currentTime);
-    this.output.gain.exponentialRampToValueAtTime(.2, this.context.currentTime + 1.4);
+    this.output.gain.exponentialRampToValueAtTime(.48, this.context.currentTime + 1.4);
     this.reconcile();
   }
   stop() {
@@ -41,7 +42,7 @@ class RecordAudio {
   }
   reconcile() {
     if (!this.context || !this.output) return;
-    const playable = state.catalog.entries.filter((entry) => state.selected.has(entry.id) && entry.sound);
+    const playable = state.catalog.entries.filter((entry) => state.selected.has(entry.id) && isPlayable(entry));
     for (const [id, voice] of this.voices) if (!playable.some((entry) => entry.id === id)) {
       voice.gain.gain.setTargetAtTime(.0001, this.context.currentTime, .22);
       voice.oscillators.forEach((oscillator) => oscillator.stop(this.context.currentTime + 1));
@@ -53,27 +54,30 @@ class RecordAudio {
       const filter = this.context.createBiquadFilter();
       const pan = this.context.createStereoPanner();
       const seed = stableHash(entry.id);
-      const root = entry.sound.rootHz || 46 + seed % 25;
-      const kernelValue = state.nodes.find(({ entry: nodeEntry }) => nodeEntry.id === entry.id)?.kernel.value || 1;
-      filter.type = "lowpass"; filter.frequency.value = entry.sound.cutoffHz || 900 + seed % 1400; filter.Q.value = .7;
-      pan.pan.value = playable.length < 2 ? 0 : -.34 + order / Math.max(1, playable.length - 1) * .68;
+      const declaredFrequencies = entry.sound.frequenciesHz?.filter((value) => Number.isFinite(value) && value > 0) || [];
+      const root = declaredFrequencies[0] || entry.sound.rootHz || 46 + seed % 25;
+      filter.type = entry.sound.filterType || "lowpass"; filter.frequency.value = entry.sound.cutoffHz || 900 + seed % 1400; filter.Q.value = entry.sound.resonance || .7;
+      pan.pan.value = Number.isFinite(entry.sound.pan) ? Math.max(-1,Math.min(1,entry.sound.pan)) : 0;
       voiceGain.gain.value = .0001;
       filter.connect(pan).connect(voiceGain).connect(this.output);
-      const ratios = [...new Set([...(entry.sound.ratios || [1, 1.5, 2.01]), .5, 1 + kernelValue / 16])].slice(0, 6);
+      const ratios = declaredFrequencies.length
+        ? declaredFrequencies.map((frequency) => frequency / root)
+        : [...new Set(entry.sound.ratios || [1])].slice(0, 6);
       const oscillators = ratios.map((ratio, index) => {
         const oscillator = this.context.createOscillator();
         const partial = this.context.createGain();
         oscillator.type = entry.sound.waves?.[index] || (index ? "triangle" : "sine");
         oscillator.frequency.value = root * ratio;
-        oscillator.detune.value = ((seed >>> (index * 3)) % 9 - 4) * .35;
-        partial.gain.value = [1, .22, .08, .03, .035, .02][index] || .02;
+        oscillator.detune.value = entry.sound.detuneCents?.[index] || 0;
+        partial.gain.value = declaredFrequencies.length ? 1 / Math.sqrt(declaredFrequencies.length) : ([1, .22, .08, .03, .035, .02][index] || .02);
         oscillator.connect(partial).connect(filter); oscillator.start();
         return oscillator;
       });
-      voiceGain.gain.exponentialRampToValueAtTime(.13 / Math.sqrt(playable.length), this.context.currentTime + 2.2);
+      const lowRegisterLift = root < 70 ? 1.32 : root < 100 ? 1.14 : 1;
+      voiceGain.gain.exponentialRampToValueAtTime(.24 * lowRegisterLift / Math.sqrt(playable.length), this.context.currentTime + 2.2);
       this.voices.set(entry.id, { gain: voiceGain, oscillators });
     });
-    const level = playable.length ? .2 : .0001;
+    const level = playable.length ? .48 : .0001;
     this.output.gain.setTargetAtTime(level, this.context.currentTime, .4);
   }
 }
@@ -131,7 +135,7 @@ function draw(now) {
 
 function toggle(id) {
   const entry = state.catalog.entries.find((item) => item.id === id);
-  if (!entry?.sound) return;
+  if (!entry || !isPlayable(entry)) return;
   state.selected.has(id) ? state.selected.delete(id) : state.selected.add(id);
   renderArchive(); renderAssembly(); audio?.reconcile();
 }
@@ -152,7 +156,7 @@ function renderArchive() {
     <p class="record-kind">${entry.kind}</p>
     <p class="record-state">${entry.availability}</p>
     <div class="record-actions">
-      ${entry.sound ? `<button type="button" data-select="${entry.id}" aria-pressed="${state.selected.has(entry.id)}">${state.selected.has(entry.id) ? "Held" : "Add"}</button>` : ""}
+      ${isPlayable(entry) ? `<button type="button" data-select="${entry.id}" aria-pressed="${state.selected.has(entry.id)}">${state.selected.has(entry.id) ? "Held" : "Add"}</button>` : ""}
       <a href="${entry.source.url}" target="_blank" rel="noopener">Source</a>
     </div>
   </article>`).join("");
@@ -172,7 +176,7 @@ canvas.addEventListener("keydown", (event) => {
 listenButton.addEventListener("click", async () => {
   audio ||= new RecordAudio();
   if (audio.awake) { audio.stop(); listenButton.textContent = "Listen"; listenButton.setAttribute("aria-pressed", "false"); }
-  else { if (!state.selected.size) state.catalog.entries.filter(({ sound }) => sound).slice(0, 2).forEach(({ id }) => state.selected.add(id)); await audio.start(); renderArchive(); renderAssembly(); listenButton.textContent = "Silence"; listenButton.setAttribute("aria-pressed", "true"); }
+  else { if (!state.selected.size) state.catalog.entries.filter(isPlayable).slice(0, 2).forEach(({ id }) => state.selected.add(id)); await audio.start(); renderArchive(); renderAssembly(); listenButton.textContent = "Silence"; listenButton.setAttribute("aria-pressed", "true"); }
 });
 clearButton.addEventListener("click", () => { state.selected.clear(); renderArchive(); renderAssembly(); audio?.reconcile(); });
 document.addEventListener("visibilitychange", () => { if (document.hidden && audio?.awake) audio.context?.suspend(); else if (audio?.awake) audio.context?.resume(); });
