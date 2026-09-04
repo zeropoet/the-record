@@ -3,7 +3,7 @@
   "archive": "The Record",
   "canonical_url": "https://record.zeropoet.xyz/",
   "principle": "Sources remain sovereign. The Record indexes their relations without copying authority or media.",
-  "updated_at": "2026-09-03T18:48:00.656322Z",
+  "updated_at": "2026-09-04T14:37:37.454656Z",
   "sources": [
     {
       "source_id": "foldforge",
@@ -254,9 +254,12 @@
           "RGB energy",
           "orbital radius",
           "velocity",
-          "structural memory"
+          "structural memory",
+          "portal membrane load",
+          "radial motion"
         ],
-        "spatialization": "stereo gravity field with regenerative delay"
+        "spatialization": "stereo spectral-gravity field; scar position sets voice placement while viscous membrane load deepens filtering and regenerative delay",
+        "dynamics": "radial motion introduces restrained differential detuning without adding rotational modulation"
       }
     }
   ]
