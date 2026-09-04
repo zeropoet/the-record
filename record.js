@@ -14,7 +14,9 @@ const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const state = { catalog: null, nodes: [], edges: [], layout: null, selected: new Set(), hover: -1, pointer: { x: 0, y: 0 }, started: performance.now() };
 let audio;
-const isPlayable = (entry) => Boolean(entry.sound && (entry.sound.rootHz || entry.sound.frequenciesHz?.length));
+const isPlayable = (entry) => Boolean(entry.sound && (
+  entry.sound.rootHz || entry.sound.frequenciesHz?.length || entry.sound.events?.length
+));
 
 class RecordAudio {
   constructor() { this.context = null; this.output = null; this.voices = new Map(); this.awake = false; }
@@ -40,42 +42,84 @@ class RecordAudio {
     this.awake = false;
     setTimeout(() => { if (!this.awake) this.context?.suspend(); }, 900);
   }
+  stopVoice(voice) {
+    voice.gain.gain.setTargetAtTime(.0001, this.context.currentTime, .12);
+    if (voice.timer) clearTimeout(voice.timer);
+    voice.oscillators?.forEach((oscillator) => {
+      try { oscillator.stop(this.context.currentTime + .5); } catch {}
+    });
+  }
+  createEventVoice(entry, playableCount) {
+    const voiceGain = this.context.createGain();
+    voiceGain.gain.value = 1.6 / Math.sqrt(playableCount);
+    voiceGain.connect(this.output);
+    const voice = { gain: voiceGain, oscillators: new Set(), timer: null, cursor: 0 };
+    const schedule = () => {
+      if (!this.voices.has(entry.id) || !this.awake) return;
+      const event = entry.sound.events[voice.cursor % entry.sound.events.length];
+      const beat = 60 / Math.max(1, Number(entry.sound.tempo) || 60);
+      const beats = Math.max(.125, Number(event.beats) || .5);
+      const duration = beat * beats;
+      if (!event.rest && Number.isFinite(Number(event.frequency)) && Number(event.frequency) > 0) {
+        const oscillator = this.context.createOscillator();
+        const envelope = this.context.createGain();
+        oscillator.type = event.waveform || (["ground", "antigravity", "foldforge"].includes(event.voice) ? "triangle" : "sine");
+        oscillator.frequency.value = Number(event.frequency);
+        const peak = Math.max(.018, Math.min(.1, Number(event.amplitude) || .05));
+        const now = this.context.currentTime;
+        envelope.gain.setValueAtTime(.0001, now);
+        envelope.gain.exponentialRampToValueAtTime(peak, now + Math.min(.08, duration * .25));
+        envelope.gain.exponentialRampToValueAtTime(.0001, now + Math.max(.12, duration * .9));
+        oscillator.connect(envelope).connect(voiceGain);
+        oscillator.start(now); oscillator.stop(now + duration);
+        voice.oscillators.add(oscillator);
+        oscillator.addEventListener("ended", () => voice.oscillators.delete(oscillator), { once: true });
+      }
+      voice.cursor += 1;
+      voice.timer = setTimeout(schedule, duration * 1000);
+    };
+    this.voices.set(entry.id, voice);
+    schedule();
+  }
+  createContinuousVoice(entry, playableCount) {
+    const voiceGain = this.context.createGain();
+    const filter = this.context.createBiquadFilter();
+    const pan = this.context.createStereoPanner();
+    const seed = stableHash(entry.id);
+    const declaredFrequencies = entry.sound.frequenciesHz?.filter((value) => Number.isFinite(value) && value > 0) || [];
+    const root = declaredFrequencies[0] || entry.sound.rootHz || 46 + seed % 25;
+    filter.type = entry.sound.filterType || "lowpass"; filter.frequency.value = entry.sound.cutoffHz || 900 + seed % 1400; filter.Q.value = entry.sound.resonance || .7;
+    pan.pan.value = Number.isFinite(entry.sound.pan) ? Math.max(-1, Math.min(1, entry.sound.pan)) : 0;
+    voiceGain.gain.value = .0001;
+    filter.connect(pan).connect(voiceGain).connect(this.output);
+    const ratios = declaredFrequencies.length
+      ? declaredFrequencies.map((frequency) => frequency / root)
+      : [...new Set(entry.sound.ratios || [1])].slice(0, 6);
+    const oscillators = ratios.map((ratio, index) => {
+      const oscillator = this.context.createOscillator();
+      const partial = this.context.createGain();
+      oscillator.type = entry.sound.waves?.[index] || (index ? "triangle" : "sine");
+      oscillator.frequency.value = root * ratio;
+      oscillator.detune.value = entry.sound.detuneCents?.[index] || 0;
+      partial.gain.value = declaredFrequencies.length ? 1 / Math.sqrt(declaredFrequencies.length) : ([1, .22, .08, .03, .035, .02][index] || .02);
+      oscillator.connect(partial).connect(filter); oscillator.start();
+      return oscillator;
+    });
+    const lowRegisterLift = root < 70 ? 1.32 : root < 100 ? 1.14 : 1;
+    voiceGain.gain.exponentialRampToValueAtTime(.24 * lowRegisterLift / Math.sqrt(playableCount), this.context.currentTime + 2.2);
+    this.voices.set(entry.id, { gain: voiceGain, oscillators });
+  }
   reconcile() {
     if (!this.context || !this.output) return;
     const playable = state.catalog.entries.filter((entry) => state.selected.has(entry.id) && isPlayable(entry));
     for (const [id, voice] of this.voices) if (!playable.some((entry) => entry.id === id)) {
-      voice.gain.gain.setTargetAtTime(.0001, this.context.currentTime, .22);
-      voice.oscillators.forEach((oscillator) => oscillator.stop(this.context.currentTime + 1));
+      this.stopVoice(voice);
       this.voices.delete(id);
     }
-    playable.forEach((entry, order) => {
+    playable.forEach((entry) => {
       if (this.voices.has(entry.id)) return;
-      const voiceGain = this.context.createGain();
-      const filter = this.context.createBiquadFilter();
-      const pan = this.context.createStereoPanner();
-      const seed = stableHash(entry.id);
-      const declaredFrequencies = entry.sound.frequenciesHz?.filter((value) => Number.isFinite(value) && value > 0) || [];
-      const root = declaredFrequencies[0] || entry.sound.rootHz || 46 + seed % 25;
-      filter.type = entry.sound.filterType || "lowpass"; filter.frequency.value = entry.sound.cutoffHz || 900 + seed % 1400; filter.Q.value = entry.sound.resonance || .7;
-      pan.pan.value = Number.isFinite(entry.sound.pan) ? Math.max(-1,Math.min(1,entry.sound.pan)) : 0;
-      voiceGain.gain.value = .0001;
-      filter.connect(pan).connect(voiceGain).connect(this.output);
-      const ratios = declaredFrequencies.length
-        ? declaredFrequencies.map((frequency) => frequency / root)
-        : [...new Set(entry.sound.ratios || [1])].slice(0, 6);
-      const oscillators = ratios.map((ratio, index) => {
-        const oscillator = this.context.createOscillator();
-        const partial = this.context.createGain();
-        oscillator.type = entry.sound.waves?.[index] || (index ? "triangle" : "sine");
-        oscillator.frequency.value = root * ratio;
-        oscillator.detune.value = entry.sound.detuneCents?.[index] || 0;
-        partial.gain.value = declaredFrequencies.length ? 1 / Math.sqrt(declaredFrequencies.length) : ([1, .22, .08, .03, .035, .02][index] || .02);
-        oscillator.connect(partial).connect(filter); oscillator.start();
-        return oscillator;
-      });
-      const lowRegisterLift = root < 70 ? 1.32 : root < 100 ? 1.14 : 1;
-      voiceGain.gain.exponentialRampToValueAtTime(.24 * lowRegisterLift / Math.sqrt(playable.length), this.context.currentTime + 2.2);
-      this.voices.set(entry.id, { gain: voiceGain, oscillators });
+      if (entry.sound.events?.length) this.createEventVoice(entry, playable.length);
+      else this.createContinuousVoice(entry, playable.length);
     });
     const level = playable.length ? .48 : .0001;
     this.output.gain.setTargetAtTime(level, this.context.currentTime, .4);

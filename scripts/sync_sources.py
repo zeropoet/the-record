@@ -19,6 +19,11 @@ TARGET = ROOT / "archive" / "sound-archive.json"
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 
 
+def is_playable(entry: dict) -> bool:
+    sound = entry.get("sound") or {}
+    return bool(sound.get("rootHz") or sound.get("frequenciesHz") or sound.get("events"))
+
+
 def read_json(path: Path) -> dict:
     with path.open("r", encoding="utf-8") as handle:
         return json.load(handle)
@@ -51,6 +56,8 @@ def build_archive(manifests: list[dict]) -> dict:
             raise ValueError(f"{identifier} has an invalid source URL")
         if entry.get("availability") == "local canonical file" and not SHA256.fullmatch(entry.get("sha256", "")):
             raise ValueError(f"{identifier} has no valid SHA-256 witness")
+        if not is_playable(entry):
+            raise ValueError(f"{identifier} is not playable and cannot enter The Record")
     return {
         "schema": "zeropoet-sound-archive/v1",
         "archive": "The Record",

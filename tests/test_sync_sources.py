@@ -26,6 +26,7 @@ class SyncSourcesTests(unittest.TestCase):
                 "kind": "procedural voice",
                 "availability": "public structure",
                 "source": {"url": "https://example.com/voice"},
+                "sound": {"rootHz": 55},
             }],
         }]
         archive = MODULE.build_archive(manifests)
@@ -41,6 +42,17 @@ class SyncSourcesTests(unittest.TestCase):
             }],
         }]
         with self.assertRaisesRegex(ValueError, "SHA-256"):
+            MODULE.build_archive(manifests)
+
+    def test_rejects_entries_the_record_cannot_play(self) -> None:
+        manifests = [{
+            "source_id": "test", "authority": "Test", "canonical_url": "https://example.com/",
+            "entries": [{
+                "id": "silent-reference", "availability": "public reference",
+                "source": {"url": "https://example.com/"},
+            }],
+        }]
+        with self.assertRaisesRegex(ValueError, "not playable"):
             MODULE.build_archive(manifests)
 
 

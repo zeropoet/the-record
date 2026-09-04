@@ -10,6 +10,8 @@ for (const entry of catalog.entries) {
   if (ids.has(entry.id)) throw new Error(`Duplicate id: ${entry.id}`);
   ids.add(entry.id);
   if (!entry.source.url.startsWith("https://")) throw new Error(`${entry.id} source URL is not HTTPS`);
+  if (!(entry.sound?.rootHz || entry.sound?.frequenciesHz?.length || entry.sound?.events?.length)) throw new Error(`${entry.id} is not playable`);
+  if (entry.sound?.events && entry.sound.events.some((event) => !event.rest && !(Number(event.frequency) > 0))) throw new Error(`${entry.id} contains an unplayable event`);
   if (entry.availability === "local canonical file" && !/^[0-9a-f]{64}$/.test(entry.sha256 || "")) throw new Error(`${entry.id} is missing its SHA-256 witness`);
 }
 for (const path of ["../index.html", "../styles.css", "../record.js", "../assets/sovereign-standard-record-mark.svg"]) await access(new URL(path, import.meta.url));
