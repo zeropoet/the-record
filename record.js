@@ -1,4 +1,4 @@
-import { buildKernelField, FOLDKERNEL, stableHash } from "./record-kernel.js";
+import { buildKernelField, FOLDKERNEL, stableHash } from "./record-kernel.js?v=3";
 
 const canvas = document.querySelector("#field");
 const context = canvas.getContext("2d");
@@ -225,7 +225,7 @@ listenButton.addEventListener("click", async () => {
 clearButton.addEventListener("click", () => { state.selected.clear(); renderArchive(); renderAssembly(); audio?.reconcile(); });
 document.addEventListener("visibilitychange", () => { if (document.hidden && audio?.awake) audio.context?.suspend(); else if (audio?.awake) audio.context?.resume(); });
 
-fetch("archive/sound-archive.json", { cache: "no-store" })
+fetch("archive/sound-archive.json?v=3", { cache: "no-store" })
   .then((response) => { if (!response.ok) throw new Error(`Archive ${response.status}`); return response.json(); })
   .then((catalog) => { state.catalog = catalog; state.layout = null; renderArchive(); renderAssembly(); requestAnimationFrame(draw); })
   .catch((error) => { fieldLabel.textContent = "The archive could not be resolved"; console.error(error); });
