@@ -3,7 +3,7 @@
   "archive": "The Record",
   "canonical_url": "https://record.zeropoet.xyz/",
   "principle": "Sources remain sovereign. The Record indexes their relations without copying authority or media.",
-  "updated_at": "2026-09-05T19:11:31.854Z",
+  "updated_at": "2026-09-05T19:47:17.121Z",
   "sources": [
     {
       "source_id": "foldforge",
@@ -402,7 +402,7 @@
         "duration_seconds": 6.4,
         "renderer": {
           "engine": "timed-event-score/v1",
-          "masterGain": 0.24,
+          "masterGain": 0.72,
           "pitchMultiplier": 2,
           "waveformCycle": [
             "sine",
@@ -417,6 +417,8 @@
           "attackMaxSeconds": 0.18,
           "attackDurationRatio": 0.22,
           "tailSeconds": 0.03,
+          "loop": true,
+          "loopGapSeconds": 0.4,
           "stereo": "center"
         },
         "events": [

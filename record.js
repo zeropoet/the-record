@@ -178,29 +178,37 @@ class RecordAudio {
     const gain = this.context.createGain();
     gain.gain.value = Number(renderer.masterGain || .24) / Math.sqrt(Math.max(1, voiceCount));
     this.connectContract(gain, renderer);
-    const voice = { gain, oscillators: [], timer: 0 };
+    const voice = { gain, oscillators: new Set(), timer: 0 };
     this.voices.set(entry.id, voice);
-    const start = this.context.currentTime + .08;
-    entry.sound.events.forEach((event, index) => {
-      const at = start + Number(event.at || 0);
-      const duration = Number(event.duration || .4);
-      const oscillator = this.context.createOscillator();
-      const filter = this.context.createBiquadFilter();
-      const envelope = this.context.createGain();
-      const waveformCycle = renderer.waveformCycle || ["sine", "triangle", "sine"];
-      oscillator.type = waveformCycle[index % waveformCycle.length];
-      oscillator.frequency.value = (entry.sound.rootHz || 55) * Number(event.ratio || 1) * Number(renderer.pitchMultiplier || 2);
-      filter.type = renderer.filter?.type || "lowpass";
-      filter.frequency.value = Number(renderer.filter?.startHz || 720) + index * Number(renderer.filter?.stepHz || 110);
-      envelope.gain.setValueAtTime(.0001, at);
-      envelope.gain.exponentialRampToValueAtTime(Number(event.amplitude || .035), at + Math.min(Number(renderer.attackMaxSeconds || .18), duration * Number(renderer.attackDurationRatio || .22)));
-      envelope.gain.exponentialRampToValueAtTime(.0001, at + duration);
-      oscillator.connect(filter).connect(envelope).connect(gain);
-      oscillator.start(at);
-      oscillator.stop(at + duration + Number(renderer.tailSeconds || .03));
-      voice.oscillators.push(oscillator);
-    });
-    voice.timer = window.setTimeout(() => { voice.oscillators = []; }, (Number(entry.sound.duration_seconds || 0) + .4) * 1000);
+    const scheduleCycle = () => {
+      if (this.voices.get(entry.id) !== voice) return;
+      const start = this.context.currentTime + .08;
+      entry.sound.events.forEach((event, index) => {
+        const at = start + Number(event.at || 0);
+        const duration = Number(event.duration || .4);
+        const oscillator = this.context.createOscillator();
+        const filter = this.context.createBiquadFilter();
+        const envelope = this.context.createGain();
+        const waveformCycle = renderer.waveformCycle || ["sine", "triangle", "sine"];
+        oscillator.type = waveformCycle[index % waveformCycle.length];
+        oscillator.frequency.value = (entry.sound.rootHz || 55) * Number(event.ratio || 1) * Number(renderer.pitchMultiplier || 2);
+        filter.type = renderer.filter?.type || "lowpass";
+        filter.frequency.value = Number(renderer.filter?.startHz || 720) + index * Number(renderer.filter?.stepHz || 110);
+        envelope.gain.setValueAtTime(.0001, at);
+        envelope.gain.exponentialRampToValueAtTime(Number(event.amplitude || .035), at + Math.min(Number(renderer.attackMaxSeconds || .18), duration * Number(renderer.attackDurationRatio || .22)));
+        envelope.gain.exponentialRampToValueAtTime(.0001, at + duration);
+        oscillator.connect(filter).connect(envelope).connect(gain);
+        oscillator.start(at);
+        oscillator.stop(at + duration + Number(renderer.tailSeconds || .03));
+        voice.oscillators.add(oscillator);
+        oscillator.addEventListener("ended", () => voice.oscillators.delete(oscillator), { once: true });
+      });
+      if (renderer.loop !== false) {
+        const cycleSeconds = Number(entry.sound.duration_seconds || 0) + Number(renderer.loopGapSeconds ?? .4);
+        voice.timer = window.setTimeout(scheduleCycle, Math.max(.1, cycleSeconds) * 1000);
+      }
+    };
+    scheduleCycle();
   }
 }
 
@@ -311,7 +319,7 @@ listenButton.addEventListener("click", async () => {
 clearButton.addEventListener("click", () => { state.selected.clear(); renderArchive(); renderAssembly(); audio?.reconcile(); });
 document.addEventListener("visibilitychange", () => { if (document.hidden && audio?.awake) audio.context?.suspend(); else if (audio?.awake) audio.context?.resume(); });
 
-fetch("archive/sound-archive.json?v=5", { cache: "no-store" })
+fetch("archive/sound-archive.json?v=6", { cache: "no-store" })
   .then((response) => { if (!response.ok) throw new Error(`Archive ${response.status}`); return response.json(); })
   .then((catalog) => { state.catalog = catalog; state.layout = null; renderArchive(); renderAssembly(); requestAnimationFrame(draw); })
   .catch((error) => { fieldLabel.textContent = "The archive could not be resolved"; console.error(error); });
