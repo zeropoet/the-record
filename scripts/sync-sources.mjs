@@ -38,6 +38,7 @@ const entries = manifests.flatMap((manifest) => manifest.entries.map((entry, ind
 const isPlayable = (entry) => Boolean(entry.sound && (
   entry.sound.rootHz || entry.sound.frequenciesHz?.length || entry.sound.events?.length
 ));
+const rendererEngines = new Set(["continuous-voice/v1", "sequential-event-score/v1", "timed-event-score/v1"]);
 const ids = new Set();
 for (const entry of entries) {
   if (!entry.id || ids.has(entry.id)) throw new Error(`Missing or duplicate entry id: ${entry.id}`);
@@ -45,6 +46,8 @@ for (const entry of entries) {
   if (!entry.source?.url?.startsWith("https://")) throw new Error(`${entry.id} has an invalid source URL`);
   if (entry.availability === "local canonical file" && !/^[0-9a-f]{64}$/.test(entry.sha256 || "")) throw new Error(`${entry.id} has no valid SHA-256 witness`);
   if (!isPlayable(entry)) throw new Error(`${entry.id} is not playable and cannot enter The Record`);
+  if (!rendererEngines.has(entry.sound.renderer?.engine)) throw new Error(`${entry.id} has no supported source-owned renderer`);
+  if (entry.sound.renderer.stereo !== "center") throw new Error(`${entry.id} does not guarantee balanced left-right playback`);
 }
 
 const collections = [...new Map(entries.map(({ collection }) => [collection.id, collection])).values()]

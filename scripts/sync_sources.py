@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 POLICY = ROOT / "propagation" / "sources.json"
 TARGET = ROOT / "archive" / "sound-archive.json"
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
+RENDERER_ENGINES = {"continuous-voice/v1", "sequential-event-score/v1", "timed-event-score/v1"}
 
 
 def is_playable(entry: dict) -> bool:
@@ -72,6 +73,11 @@ def build_archive(manifests: list[dict]) -> dict:
             raise ValueError(f"{identifier} has no valid SHA-256 witness")
         if not is_playable(entry):
             raise ValueError(f"{identifier} is not playable and cannot enter The Record")
+        renderer = (entry.get("sound") or {}).get("renderer") or {}
+        if renderer.get("engine") not in RENDERER_ENGINES:
+            raise ValueError(f"{identifier} has no supported source-owned renderer")
+        if renderer.get("stereo") != "center":
+            raise ValueError(f"{identifier} does not guarantee balanced left-right playback")
     collections_by_id = {entry["collection"]["id"]: entry["collection"] for entry in entries}
     collections = sorted(
         collections_by_id.values(),

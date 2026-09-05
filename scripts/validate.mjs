@@ -8,6 +8,7 @@ if (!Array.isArray(catalog.collections) || !catalog.collections.length) throw ne
 const collectionIds = new Set(catalog.collections.map(({ id }) => id));
 if (collectionIds.size !== catalog.collections.length) throw new Error("Archive has duplicate collection ids");
 const ids = new Set();
+const engines = new Set(["continuous-voice/v1", "sequential-event-score/v1", "timed-event-score/v1"]);
 for (const entry of catalog.entries) {
   for (const field of ["id", "title", "branch", "kind", "availability", "source"]) if (!entry[field]) throw new Error(`${entry.id || "entry"} missing ${field}`);
   if (ids.has(entry.id)) throw new Error(`Duplicate id: ${entry.id}`);
@@ -15,6 +16,8 @@ for (const entry of catalog.entries) {
   if (!collectionIds.has(entry.collection_id) || entry.collection?.id !== entry.collection_id) throw new Error(`${entry.id} has an invalid collection`);
   if (!entry.source.url.startsWith("https://")) throw new Error(`${entry.id} source URL is not HTTPS`);
   if (!(entry.sound?.rootHz || entry.sound?.frequenciesHz?.length || entry.sound?.events?.length)) throw new Error(`${entry.id} is not playable`);
+  if (!engines.has(entry.sound.renderer?.engine)) throw new Error(`${entry.id} has no supported source-owned renderer`);
+  if (entry.sound.renderer.stereo !== "center") throw new Error(`${entry.id} does not guarantee balanced left-right playback`);
   if (entry.sound?.events && entry.sound.events.some((event) => !event.rest && !(Number(event.frequency) > 0 || (Number(entry.sound.rootHz) > 0 && Number(event.ratio) > 0)))) throw new Error(`${entry.id} contains an unplayable event`);
   if (entry.availability === "local canonical file" && !/^[0-9a-f]{64}$/.test(entry.sha256 || "")) throw new Error(`${entry.id} is missing its SHA-256 witness`);
   if (["event-score", "timed-score"].includes(entry.sound?.mode) && !entry.sound.events?.length) throw new Error(`${entry.id} has an empty score`);

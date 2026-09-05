@@ -26,7 +26,7 @@ class SyncSourcesTests(unittest.TestCase):
                 "kind": "procedural voice",
                 "availability": "public structure",
                 "source": {"url": "https://example.com/voice"},
-                "sound": {"rootHz": 55},
+                "sound": {"rootHz": 55, "renderer": {"engine": "continuous-voice/v1", "stereo": "center"}},
             }],
         }]
         archive = MODULE.build_archive(manifests)
@@ -65,7 +65,7 @@ class SyncSourcesTests(unittest.TestCase):
                 "id": "question-one", "title": "Question One", "branch": "Test", "kind": "expression",
                 "availability": "public procedural score", "collection": collection,
                 "question": {"text": "What remains?"}, "source": {"url": "https://example.com/question"},
-                "sound": {"mode": "timed-score", "events": [{"at": 0, "duration": 1, "ratio": 1}]},
+                "sound": {"mode": "timed-score", "renderer": {"engine": "timed-event-score/v1", "stereo": "center"}, "events": [{"at": 0, "duration": 1, "ratio": 1}]},
             }],
         }]
         archive = MODULE.build_archive(manifests)

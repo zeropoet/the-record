@@ -3,7 +3,7 @@
   "archive": "The Record",
   "canonical_url": "https://record.zeropoet.xyz/",
   "principle": "Sources remain sovereign. The Record indexes their relations without copying authority or media.",
-  "updated_at": "2026-09-05T19:01:48.443Z",
+  "updated_at": "2026-09-05T19:11:31.854Z",
   "sources": [
     {
       "source_id": "foldforge",
@@ -70,7 +70,23 @@
           "triangle",
           "sine"
         ],
-        "cutoffHz": 1480
+        "cutoffHz": 1480,
+        "renderer": {
+          "engine": "continuous-voice/v1",
+          "masterGain": 0.24,
+          "fadeInSeconds": 2.2,
+          "fieldFilter": {
+            "type": "lowpass",
+            "frequency": 1480,
+            "Q": 0.7
+          },
+          "partialGains": [
+            1,
+            0.22,
+            0.08
+          ],
+          "stereo": "center"
+        }
       },
       "collection": {
         "id": "studio-instruments",
@@ -126,7 +142,46 @@
           "radial motion"
         ],
         "spatialization": "channel-balanced stereo field with every voice held at center; viscous membrane load deepens filtering and regenerative delay without changing left-right energy",
-        "dynamics": "radial motion introduces restrained differential detuning without adding rotational modulation"
+        "dynamics": "radial motion introduces restrained differential detuning without adding rotational modulation",
+        "renderer": {
+          "engine": "continuous-voice/v1",
+          "masterGain": 0.2,
+          "fadeInSeconds": 0.36,
+          "bypassFieldFilter": true,
+          "voiceFilters": [
+            {
+              "type": "bandpass",
+              "frequency": 1580,
+              "Q": 9
+            },
+            {
+              "type": "bandpass",
+              "frequency": 1760,
+              "Q": 9
+            },
+            {
+              "type": "bandpass",
+              "frequency": 1940,
+              "Q": 9
+            }
+          ],
+          "partialGains": [
+            0.044,
+            0.03737,
+            0.044
+          ],
+          "gainLfo": {
+            "base": 0.58,
+            "depth": 0.42,
+            "angularRate": 1.1
+          },
+          "delay": {
+            "seconds": 0.24,
+            "feedback": 0.32,
+            "maximumSeconds": 0.8
+          },
+          "stereo": "center"
+        }
       },
       "collection": {
         "id": "studio-instruments",
@@ -164,7 +219,32 @@
           "triangle",
           "triangle"
         ],
-        "cutoffHz": 1100
+        "cutoffHz": 1100,
+        "renderer": {
+          "engine": "continuous-voice/v1",
+          "masterGain": 0.2,
+          "fadeInSeconds": 3.4,
+          "compressor": {
+            "threshold": -30,
+            "knee": 20,
+            "ratio": 4,
+            "attack": 0.12,
+            "release": 0.9
+          },
+          "fieldFilter": {
+            "type": "lowpass",
+            "frequency": 1100,
+            "Q": 0.55
+          },
+          "partialGains": [
+            0.48,
+            0.24,
+            0.1,
+            0.045,
+            0.022
+          ],
+          "stereo": "center"
+        }
       },
       "collection": {
         "id": "studio-instruments",
@@ -206,7 +286,24 @@
           "sine",
           "sine"
         ],
-        "cutoffHz": 1260
+        "cutoffHz": 1260,
+        "renderer": {
+          "engine": "continuous-voice/v1",
+          "masterGain": 0.108,
+          "fadeInSeconds": 1.8,
+          "fieldFilter": {
+            "type": "lowpass",
+            "frequency": 1260,
+            "Q": 0.7
+          },
+          "partialGains": [
+            1,
+            0.22,
+            0.08,
+            0.03
+          ],
+          "stereo": "center"
+        }
       },
       "collection_id": "studio-instruments",
       "collection_order": 1
@@ -236,7 +333,24 @@
           "triangle",
           "sine"
         ],
-        "cutoffHz": 2240
+        "cutoffHz": 2240,
+        "renderer": {
+          "engine": "continuous-voice/v1",
+          "masterGain": 0.24,
+          "fadeInSeconds": 2.2,
+          "fieldFilter": {
+            "type": "lowpass",
+            "frequency": 2240,
+            "Q": 0.7
+          },
+          "partialGains": [
+            1,
+            0.22,
+            0.08,
+            0.03
+          ],
+          "stereo": "center"
+        }
       },
       "collection": {
         "id": "studio-instruments",
@@ -287,6 +401,7 @@
         "rootHz": 55,
         "duration_seconds": 6.4,
         "renderer": {
+          "engine": "timed-event-score/v1",
           "masterGain": 0.24,
           "pitchMultiplier": 2,
           "waveformCycle": [
@@ -301,7 +416,8 @@
           },
           "attackMaxSeconds": 0.18,
           "attackDurationRatio": 0.22,
-          "tailSeconds": 0.03
+          "tailSeconds": 0.03,
+          "stereo": "center"
         },
         "events": [
           {
@@ -366,6 +482,29 @@
         "schema": "root-logos-library-composition-score/v1",
         "signature": "df1332d6b86a",
         "tempo": 47,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 165,
@@ -1754,6 +1893,29 @@
         "signature": "58f7f727f62f",
         "tempo": 54,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 206.2005,
@@ -2660,6 +2822,29 @@
         "signature": "7d50927e1bb1",
         "tempo": 60,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 206.25,
@@ -3374,6 +3559,29 @@
         "signature": "bcf67bcc3f27",
         "tempo": 55,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 146.66663,
@@ -4088,6 +4296,29 @@
         "signature": "22b465ac1a93",
         "tempo": 64,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 146.66663,
@@ -4802,6 +5033,29 @@
         "signature": "1fdd9ce6ef48",
         "tempo": 57,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 206.25,
@@ -5516,6 +5770,29 @@
         "signature": "517dce001680",
         "tempo": 46,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 110,
@@ -6230,6 +6507,29 @@
         "signature": "1c767a524a09",
         "tempo": 49,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 165,
@@ -6944,6 +7244,29 @@
         "signature": "ef809660961b",
         "tempo": 62,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 220,
@@ -7658,6 +7981,29 @@
         "signature": "baf7d768397f",
         "tempo": 63,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 146.66663,
@@ -8372,6 +8718,29 @@
         "signature": "c49b31ba09e0",
         "tempo": 62,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 137.5,
@@ -9086,6 +9455,29 @@
         "signature": "c7127a8f3947",
         "tempo": 60,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 206.25,
@@ -9800,6 +10192,29 @@
         "signature": "b9f877baa5b4",
         "tempo": 62,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 137.5,
@@ -10514,6 +10929,29 @@
         "signature": "81b0a6e6e09e",
         "tempo": 54,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 165,
@@ -11228,6 +11666,29 @@
         "signature": "c09d05b5d754",
         "tempo": 48,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 138.16989999999998,
@@ -12134,6 +12595,29 @@
         "signature": "a587ee5c5de4",
         "tempo": 49,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 137.5,
@@ -12848,6 +13332,29 @@
         "signature": "8da2d18f8b73",
         "tempo": 47,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 137.5,
@@ -13562,6 +14069,29 @@
         "signature": "cf9bc2b0749e",
         "tempo": 64,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 220,
@@ -14276,6 +14806,29 @@
         "signature": "3bd313888411",
         "tempo": 46,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 146.66663,
@@ -14990,6 +15543,29 @@
         "signature": "329517695148",
         "tempo": 56,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 206.25,
@@ -15704,6 +16280,29 @@
         "signature": "b142f1998eaa",
         "tempo": 60,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 137.5,
@@ -16418,6 +17017,29 @@
         "signature": "7cd577219b91",
         "tempo": 44,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 123.75,
@@ -17132,6 +17754,29 @@
         "signature": "a1cb1d7f856c",
         "tempo": 51,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 220,
@@ -17846,6 +18491,29 @@
         "signature": "7908213b62f7",
         "tempo": 54,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 110,
@@ -18560,6 +19228,29 @@
         "signature": "15956f52c587",
         "tempo": 50,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 123.75,
@@ -19274,6 +19965,29 @@
         "signature": "32426dce129b",
         "tempo": 45,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 220,
@@ -19988,6 +20702,29 @@
         "signature": "13122868f123",
         "tempo": 53,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 165,
@@ -20702,6 +21439,29 @@
         "signature": "d825624c4a0c",
         "tempo": 49,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 146.66663,
@@ -21416,6 +22176,29 @@
         "signature": "75ad9278737d",
         "tempo": 53,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 165,
@@ -22130,6 +22913,29 @@
         "signature": "86b531d145a5",
         "tempo": 62,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 146.66663,
@@ -22844,6 +23650,29 @@
         "signature": "bae443bad095",
         "tempo": 61,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 110,
@@ -23558,6 +24387,29 @@
         "signature": "5b0b0c27bdf2",
         "tempo": 47,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 220,
@@ -24272,6 +25124,29 @@
         "signature": "591093d3fcce",
         "tempo": 50,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 183.33337,
@@ -24986,6 +25861,29 @@
         "signature": "5bdf2904180c",
         "tempo": 57,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 206.25,
@@ -25700,6 +26598,29 @@
         "signature": "3d209ead0b22",
         "tempo": 52,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 183.33337,
@@ -26414,6 +27335,29 @@
         "signature": "15484299ba6d",
         "tempo": 48,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 183.33337,
@@ -27128,6 +28072,29 @@
         "signature": "9b5bae28edcc",
         "tempo": 52,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 183.33337,
@@ -27842,6 +28809,29 @@
         "signature": "1f3bc1a224e0",
         "tempo": 56,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 146.66663,
@@ -28556,6 +29546,29 @@
         "signature": "08c18674d7f6",
         "tempo": 47,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 220,
@@ -29270,6 +30283,29 @@
         "signature": "c3a8d13b2271",
         "tempo": 49,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 165,
@@ -29984,6 +31020,29 @@
         "signature": "608b8721ef09",
         "tempo": 62,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 123.75,
@@ -30698,6 +31757,29 @@
         "signature": "aa7098564455",
         "tempo": 52,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 110,
@@ -31412,6 +32494,29 @@
         "signature": "71a34f77a260",
         "tempo": 63,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 110,
@@ -32126,6 +33231,29 @@
         "signature": "05fa80cbf55f",
         "tempo": 59,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 146.66663,
@@ -32840,6 +33968,29 @@
         "signature": "fbd0023a130c",
         "tempo": 55,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 146.66663,
@@ -33554,6 +34705,29 @@
         "signature": "19c44e605706",
         "tempo": 60,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 165,
@@ -34268,6 +35442,29 @@
         "signature": "9a90f368762a",
         "tempo": 48,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 165,
@@ -34982,6 +36179,29 @@
         "signature": "b0698867108e",
         "tempo": 55,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 220,
@@ -35696,6 +36916,29 @@
         "signature": "6d36f0737669",
         "tempo": 45,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 146.66663,
@@ -36410,6 +37653,29 @@
         "signature": "840971b564c3",
         "tempo": 46,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 123.75,
@@ -37124,6 +38390,29 @@
         "signature": "202fbfb6c3fe",
         "tempo": 62,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 165,
@@ -37838,6 +39127,29 @@
         "signature": "6535fa8e5e29",
         "tempo": 61,
         "rootHz": 55,
+        "renderer": {
+          "engine": "sequential-event-score/v1",
+          "masterGain": 0.36,
+          "outputGain": 2,
+          "compressor": {
+            "threshold": -14,
+            "knee": 8,
+            "ratio": 10,
+            "attack": 0.004,
+            "release": 0.22
+          },
+          "amplitude": {
+            "minimum": 0.018,
+            "maximum": 1
+          },
+          "envelope": {
+            "attackSeconds": 0.08,
+            "releaseRatio": 0.9,
+            "minimumReleaseSeconds": 0.2
+          },
+          "loop": true,
+          "stereo": "center"
+        },
         "events": [
           {
             "frequency": 123.75,

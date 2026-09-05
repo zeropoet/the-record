@@ -31,6 +31,9 @@ hashes.
 - A missing public media URL is represented as unavailable; it is never replaced
   with a copy or an invented stream.
 - Listening begins only after explicit visitor action.
+- Every playable entry carries a versioned, source-owned renderer contract for
+  its gain, envelope, filtering, dynamics, effects, and centered stereo image.
+  The Record interprets that contract instead of substituting a house voice.
 - The initial Assembly is provisional. It relates deterministic public sound
   structures in one browser-local field and changes no source artifact.
 
@@ -59,11 +62,13 @@ node scripts/record-kernel.test.mjs
 python3 scripts/sync_sources.py \
   --local foldforge=/path/to/FoldForge/public/record-sound-archive.json \
   --local root-logos=/path/to/root-logos/content/record-sound-archive.json \
-  --local telos=/path/to/Telos/public/record-sound-archive.json
+  --local telos=/path/to/Telos/public/record-sound-archive.json \
+  --local ovel=/path/to/ovel-core/public/record-sound-archive.json
 node scripts/sync-sources.mjs \
   --local foldforge=/path/to/FoldForge/public/record-sound-archive.json \
   --local root-logos=/path/to/root-logos/content/record-sound-archive.json \
-  --local telos=/path/to/Telos/public/record-sound-archive.json
+  --local telos=/path/to/Telos/public/record-sound-archive.json \
+  --local ovel=/path/to/ovel-core/public/record-sound-archive.json
 python3 -m http.server 8080
 ```
 
@@ -72,7 +77,7 @@ Then open `http://127.0.0.1:8080/`.
 ## Canonical runtime
 
 The static site is served by Caddy from the Telos Lightsail instance. A hardened
-oneshot reconciler reads the three public source manifests directly over HTTPS;
+oneshot reconciler reads the four public source manifests directly over HTTPS;
 its persistent systemd timer runs daily and a bounded propagation event may
 start the same service sooner. The complete source set must validate before the
 archive file is atomically replaced. GitHub stores reviewed source and history

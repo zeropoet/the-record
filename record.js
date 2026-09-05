@@ -27,13 +27,13 @@ class RecordAudio {
     await this.context.resume();
     if (!this.output) {
       const compressor = this.context.createDynamicsCompressor();
-      compressor.threshold.value = -20; compressor.knee.value = 16; compressor.ratio.value = 4.5; compressor.attack.value = .06; compressor.release.value = .65;
-      this.output = this.context.createGain(); this.output.gain.value = .0001;
+      compressor.threshold.value = -1; compressor.knee.value = 0; compressor.ratio.value = 20; compressor.attack.value = .003; compressor.release.value = .2;
+      this.output = this.context.createGain(); this.output.gain.value = 1;
       this.output.connect(compressor).connect(this.context.destination);
     }
     this.awake = true;
     this.output.gain.cancelScheduledValues(this.context.currentTime);
-    this.output.gain.exponentialRampToValueAtTime(.48, this.context.currentTime + 1.4);
+    this.output.gain.exponentialRampToValueAtTime(1, this.context.currentTime + .08);
     this.reconcile();
   }
   stop() {
@@ -51,10 +51,31 @@ class RecordAudio {
       try { oscillator.stop(this.context.currentTime + .5); } catch {}
     });
   }
+  connectContract(input, renderer = {}) {
+    let tail = input;
+    if (renderer.delay) {
+      const merger = this.context.createGain();
+      const delay = this.context.createDelay(Math.max(.8, Number(renderer.delay.maximumSeconds || .8)));
+      const feedback = this.context.createGain();
+      delay.delayTime.value = Number(renderer.delay.seconds || .24);
+      feedback.gain.value = Number(renderer.delay.feedback || .32);
+      tail.connect(merger); tail.connect(delay); delay.connect(feedback).connect(delay); delay.connect(merger);
+      tail = merger;
+    }
+    if (renderer.compressor) {
+      const compressor = this.context.createDynamicsCompressor();
+      for (const key of ["threshold", "knee", "ratio", "attack", "release"]) {
+        if (Number.isFinite(Number(renderer.compressor[key]))) compressor[key].value = Number(renderer.compressor[key]);
+      }
+      tail.connect(compressor); tail = compressor;
+    }
+    tail.connect(this.output);
+  }
   createEventVoice(entry, playableCount) {
+    const renderer = entry.sound.renderer || {};
     const voiceGain = this.context.createGain();
-    voiceGain.gain.value = 1.6 / Math.sqrt(playableCount);
-    voiceGain.connect(this.output);
+    voiceGain.gain.value = Number(renderer.masterGain || .36) * Number(renderer.outputGain || 2) / Math.sqrt(playableCount);
+    this.connectContract(voiceGain, renderer);
     const voice = { gain: voiceGain, oscillators: new Set(), timer: null, cursor: 0 };
     const schedule = () => {
       if (!this.voices.has(entry.id) || !this.awake) return;
@@ -67,11 +88,13 @@ class RecordAudio {
         const envelope = this.context.createGain();
         oscillator.type = event.waveform || (["ground", "antigravity", "foldforge"].includes(event.voice) ? "triangle" : "sine");
         oscillator.frequency.value = Number(event.frequency);
-        const peak = Math.max(.018, Math.min(.1, Number(event.amplitude) || .05));
+        const minimum = Number(renderer.amplitude?.minimum || .018);
+        const maximum = Number(renderer.amplitude?.maximum || 1);
+        const peak = Math.max(minimum, Math.min(maximum, Number(event.amplitude) || .05));
         const now = this.context.currentTime;
         envelope.gain.setValueAtTime(.0001, now);
-        envelope.gain.exponentialRampToValueAtTime(peak, now + Math.min(.08, duration * .25));
-        envelope.gain.exponentialRampToValueAtTime(.0001, now + Math.max(.12, duration * .9));
+        envelope.gain.exponentialRampToValueAtTime(peak, now + Math.min(Number(renderer.envelope?.attackSeconds || .08), duration * .25));
+        envelope.gain.exponentialRampToValueAtTime(.0001, now + Math.max(Number(renderer.envelope?.minimumReleaseSeconds || .2), duration * Number(renderer.envelope?.releaseRatio || .9)));
         oscillator.connect(envelope).connect(voiceGain);
         oscillator.start(now); oscillator.stop(now + duration);
         voice.oscillators.add(oscillator);
@@ -84,31 +107,52 @@ class RecordAudio {
     schedule();
   }
   createContinuousVoice(entry, playableCount) {
+    const renderer = entry.sound.renderer || {};
     const voiceGain = this.context.createGain();
     const filter = this.context.createBiquadFilter();
     const pan = this.context.createStereoPanner();
     const seed = stableHash(entry.id);
     const declaredFrequencies = entry.sound.frequenciesHz?.filter((value) => Number.isFinite(value) && value > 0) || [];
     const root = declaredFrequencies[0] || entry.sound.rootHz || 46 + seed % 25;
-    filter.type = entry.sound.filterType || "lowpass"; filter.frequency.value = entry.sound.cutoffHz || 900 + seed % 1400; filter.Q.value = entry.sound.resonance || .7;
+    filter.type = renderer.fieldFilter?.type || entry.sound.filterType || "lowpass";
+    filter.frequency.value = Number(renderer.fieldFilter?.frequency || entry.sound.cutoffHz || 900 + seed % 1400);
+    filter.Q.value = Number(renderer.fieldFilter?.Q ?? entry.sound.resonance ?? .7);
     pan.pan.value = 0;
     voiceGain.gain.value = .0001;
-    filter.connect(pan).connect(voiceGain).connect(this.output);
+    filter.connect(pan).connect(voiceGain);
+    this.connectContract(voiceGain, renderer);
     const ratios = declaredFrequencies.length
       ? declaredFrequencies.map((frequency) => frequency / root)
       : [...new Set(entry.sound.ratios || [1])].slice(0, 6);
-    const oscillators = ratios.map((ratio, index) => {
+    const oscillators = [];
+    ratios.forEach((ratio, index) => {
       const oscillator = this.context.createOscillator();
       const partial = this.context.createGain();
+      const voiceFilter = renderer.voiceFilters?.[index];
       oscillator.type = entry.sound.waves?.[index] || (index ? "triangle" : "sine");
       oscillator.frequency.value = root * ratio;
       oscillator.detune.value = entry.sound.detuneCents?.[index] || 0;
-      partial.gain.value = declaredFrequencies.length ? 1 / Math.sqrt(declaredFrequencies.length) : ([1, .22, .08, .03, .035, .02][index] || .02);
-      oscillator.connect(partial).connect(filter); oscillator.start();
-      return oscillator;
+      const partialGain = renderer.partialGains?.[index] ?? (declaredFrequencies.length ? 1 / Math.sqrt(declaredFrequencies.length) : ([1, .22, .08, .03, .035, .02][index] || .02));
+      const lfo = renderer.gainLfo;
+      partial.gain.value = partialGain * Number(lfo?.base ?? 1);
+      let source = oscillator;
+      if (voiceFilter) {
+        const individualFilter = this.context.createBiquadFilter();
+        individualFilter.type = voiceFilter.type || "bandpass";
+        individualFilter.frequency.value = Number(voiceFilter.frequency || 900);
+        individualFilter.Q.value = Number(voiceFilter.Q || .7);
+        oscillator.connect(individualFilter); source = individualFilter;
+      }
+      source.connect(partial).connect(renderer.bypassFieldFilter ? pan : filter); oscillator.start(); oscillators.push(oscillator);
+      if (lfo) {
+        const modulation = this.context.createOscillator();
+        const depth = this.context.createGain();
+        modulation.frequency.value = Number(lfo.angularRate || 1.1) / (Math.PI * 2);
+        depth.gain.value = partialGain * Number(lfo.depth || .42);
+        modulation.connect(depth).connect(partial.gain); modulation.start(); oscillators.push(modulation);
+      }
     });
-    const lowRegisterLift = root < 70 ? 1.32 : root < 100 ? 1.14 : 1;
-    voiceGain.gain.exponentialRampToValueAtTime(.24 * lowRegisterLift / Math.sqrt(playableCount), this.context.currentTime + 2.2);
+    voiceGain.gain.exponentialRampToValueAtTime(Number(renderer.masterGain || .24) / Math.sqrt(playableCount), this.context.currentTime + Number(renderer.fadeInSeconds || 2.2));
     this.voices.set(entry.id, { gain: voiceGain, oscillators });
   }
   reconcile() {
@@ -120,19 +164,20 @@ class RecordAudio {
     }
     playable.forEach((entry) => {
       if (this.voices.has(entry.id)) return;
-      if (entry.sound.mode === "timed-score") this.createTimedVoice(entry, playable.length);
-      else if (entry.sound.events?.length) this.createEventVoice(entry, playable.length);
-      else this.createContinuousVoice(entry, playable.length);
+      const engine = entry.sound.renderer?.engine;
+      if (engine === "timed-event-score/v1") this.createTimedVoice(entry, playable.length);
+      else if (engine === "sequential-event-score/v1") this.createEventVoice(entry, playable.length);
+      else if (engine === "continuous-voice/v1") this.createContinuousVoice(entry, playable.length);
     });
-    const level = playable.length ? .48 : .0001;
+    const level = playable.length ? 1 : .0001;
     this.output.gain.setTargetAtTime(level, this.context.currentTime, .4);
   }
 
   createTimedVoice(entry, voiceCount) {
     const renderer = entry.sound.renderer || {};
     const gain = this.context.createGain();
-    gain.gain.value = (Number(renderer.masterGain || .24) / .48) / Math.sqrt(Math.max(1, voiceCount));
-    gain.connect(this.output);
+    gain.gain.value = Number(renderer.masterGain || .24) / Math.sqrt(Math.max(1, voiceCount));
+    this.connectContract(gain, renderer);
     const voice = { gain, oscillators: [], timer: 0 };
     this.voices.set(entry.id, voice);
     const start = this.context.currentTime + .08;
@@ -266,7 +311,7 @@ listenButton.addEventListener("click", async () => {
 clearButton.addEventListener("click", () => { state.selected.clear(); renderArchive(); renderAssembly(); audio?.reconcile(); });
 document.addEventListener("visibilitychange", () => { if (document.hidden && audio?.awake) audio.context?.suspend(); else if (audio?.awake) audio.context?.resume(); });
 
-fetch("archive/sound-archive.json?v=4", { cache: "no-store" })
+fetch("archive/sound-archive.json?v=5", { cache: "no-store" })
   .then((response) => { if (!response.ok) throw new Error(`Archive ${response.status}`); return response.json(); })
   .then((catalog) => { state.catalog = catalog; state.layout = null; renderArchive(); renderAssembly(); requestAnimationFrame(draw); })
   .catch((error) => { fieldLabel.textContent = "The archive could not be resolved"; console.error(error); });
