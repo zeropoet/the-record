@@ -40,6 +40,8 @@ class RecordAudio {
     if (!this.context || !this.output) return;
     this.output.gain.setTargetAtTime(.0001, this.context.currentTime, .18);
     this.awake = false;
+    for (const voice of this.voices.values()) this.stopVoice(voice);
+    this.voices.clear();
     setTimeout(() => { if (!this.awake) this.context?.suspend(); }, 900);
   }
   stopVoice(voice) {
@@ -89,7 +91,7 @@ class RecordAudio {
     const declaredFrequencies = entry.sound.frequenciesHz?.filter((value) => Number.isFinite(value) && value > 0) || [];
     const root = declaredFrequencies[0] || entry.sound.rootHz || 46 + seed % 25;
     filter.type = entry.sound.filterType || "lowpass"; filter.frequency.value = entry.sound.cutoffHz || 900 + seed % 1400; filter.Q.value = entry.sound.resonance || .7;
-    pan.pan.value = Number.isFinite(entry.sound.pan) ? Math.max(-1, Math.min(1, entry.sound.pan)) : 0;
+    pan.pan.value = 0;
     voiceGain.gain.value = .0001;
     filter.connect(pan).connect(voiceGain).connect(this.output);
     const ratios = declaredFrequencies.length
@@ -118,11 +120,42 @@ class RecordAudio {
     }
     playable.forEach((entry) => {
       if (this.voices.has(entry.id)) return;
-      if (entry.sound.events?.length) this.createEventVoice(entry, playable.length);
+      if (entry.sound.mode === "timed-score") this.createTimedVoice(entry, playable.length);
+      else if (entry.sound.events?.length) this.createEventVoice(entry, playable.length);
       else this.createContinuousVoice(entry, playable.length);
     });
     const level = playable.length ? .48 : .0001;
     this.output.gain.setTargetAtTime(level, this.context.currentTime, .4);
+  }
+
+  createTimedVoice(entry, voiceCount) {
+    const renderer = entry.sound.renderer || {};
+    const gain = this.context.createGain();
+    gain.gain.value = (Number(renderer.masterGain || .24) / .48) / Math.sqrt(Math.max(1, voiceCount));
+    gain.connect(this.output);
+    const voice = { gain, oscillators: [], timer: 0 };
+    this.voices.set(entry.id, voice);
+    const start = this.context.currentTime + .08;
+    entry.sound.events.forEach((event, index) => {
+      const at = start + Number(event.at || 0);
+      const duration = Number(event.duration || .4);
+      const oscillator = this.context.createOscillator();
+      const filter = this.context.createBiquadFilter();
+      const envelope = this.context.createGain();
+      const waveformCycle = renderer.waveformCycle || ["sine", "triangle", "sine"];
+      oscillator.type = waveformCycle[index % waveformCycle.length];
+      oscillator.frequency.value = (entry.sound.rootHz || 55) * Number(event.ratio || 1) * Number(renderer.pitchMultiplier || 2);
+      filter.type = renderer.filter?.type || "lowpass";
+      filter.frequency.value = Number(renderer.filter?.startHz || 720) + index * Number(renderer.filter?.stepHz || 110);
+      envelope.gain.setValueAtTime(.0001, at);
+      envelope.gain.exponentialRampToValueAtTime(Number(event.amplitude || .035), at + Math.min(Number(renderer.attackMaxSeconds || .18), duration * Number(renderer.attackDurationRatio || .22)));
+      envelope.gain.exponentialRampToValueAtTime(.0001, at + duration);
+      oscillator.connect(filter).connect(envelope).connect(gain);
+      oscillator.start(at);
+      oscillator.stop(at + duration + Number(renderer.tailSeconds || .03));
+      voice.oscillators.push(oscillator);
+    });
+    voice.timer = window.setTimeout(() => { voice.oscillators = []; }, (Number(entry.sound.duration_seconds || 0) + .4) * 1000);
   }
 }
 
@@ -193,17 +226,25 @@ function renderAssembly() {
 
 function renderArchive() {
   document.querySelector("#record-count").textContent = String(state.catalog.entries.length).padStart(2, "0");
-  document.querySelector("#branch-count").textContent = String(new Set(state.catalog.entries.map(({ branch }) => branch)).size).padStart(2, "0");
-  archiveList.innerHTML = state.catalog.entries.map((entry, index) => `<article class="record">
+  document.querySelector("#collection-count").textContent = String(state.catalog.collections?.length || 1).padStart(2, "0");
+  const collections = state.catalog.collections?.length ? state.catalog.collections : [{ id: "archive", title: "Sound Archive", type: "sound-structures" }];
+  let recordIndex = 0;
+  archiveList.innerHTML = collections.map((collection) => {
+    const entries = state.catalog.entries.filter((entry) => (entry.collection_id || "archive") === collection.id);
+    if (!entries.length) return "";
+    return `<section class="record-collection" data-collection="${collection.id}">
+      <header><div><p class="eyebrow">${collection.type.replaceAll("-", " ")}</p><h3>${collection.title}</h3></div><p>${String(entries.length).padStart(2, "0")} sounds</p></header>
+      <div>${entries.map((entry) => { const index = recordIndex++; return `<article class="record">
     <p class="record-index">${String(index + 1).padStart(2, "0")}</p>
-    <h3>${entry.title}</h3>
+    <div class="record-title"><h4>${entry.title}</h4>${entry.question?.text ? `<p class="record-question">${entry.question.text}</p>` : ""}</div>
     <p class="record-kind">${entry.kind}</p>
     <p class="record-state">${entry.availability}</p>
     <div class="record-actions">
       ${isPlayable(entry) ? `<button type="button" data-select="${entry.id}" aria-pressed="${state.selected.has(entry.id)}">${state.selected.has(entry.id) ? "Held" : "Add"}</button>` : ""}
       <a href="${entry.source.url}" target="_blank" rel="noopener">Source</a>
     </div>
-  </article>`).join("");
+  </article>`; }).join("")}</div></section>`;
+  }).join("");
   archiveList.querySelectorAll("button").forEach((button) => button.addEventListener("click", () => toggle(button.dataset.select)));
 }
 
@@ -225,7 +266,7 @@ listenButton.addEventListener("click", async () => {
 clearButton.addEventListener("click", () => { state.selected.clear(); renderArchive(); renderAssembly(); audio?.reconcile(); });
 document.addEventListener("visibilitychange", () => { if (document.hidden && audio?.awake) audio.context?.suspend(); else if (audio?.awake) audio.context?.resume(); });
 
-fetch("archive/sound-archive.json?v=3", { cache: "no-store" })
+fetch("archive/sound-archive.json?v=4", { cache: "no-store" })
   .then((response) => { if (!response.ok) throw new Error(`Archive ${response.status}`); return response.json(); })
   .then((catalog) => { state.catalog = catalog; state.layout = null; renderArchive(); renderAssembly(); requestAnimationFrame(draw); })
   .catch((error) => { fieldLabel.textContent = "The archive could not be resolved"; console.error(error); });

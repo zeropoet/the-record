@@ -45,7 +45,21 @@ def validate_manifest(source: dict, manifest: dict) -> None:
 
 
 def build_archive(manifests: list[dict]) -> dict:
-    entries = [entry for manifest in manifests for entry in manifest["entries"]]
+    fallback_collection = {
+        "id": "studio-instruments",
+        "title": "Studio Instruments",
+        "type": "source-instruments",
+        "order": 10,
+    }
+    entries = []
+    for manifest in manifests:
+        for index, source_entry in enumerate(manifest["entries"]):
+            entry = dict(source_entry)
+            collection = entry.get("collection") or fallback_collection
+            entry["collection"] = collection
+            entry["collection_id"] = collection["id"]
+            entry["collection_order"] = entry.get("collection_order", index + 1)
+            entries.append(entry)
     seen: set[str] = set()
     for entry in entries:
         identifier = entry.get("id")
@@ -58,6 +72,16 @@ def build_archive(manifests: list[dict]) -> dict:
             raise ValueError(f"{identifier} has no valid SHA-256 witness")
         if not is_playable(entry):
             raise ValueError(f"{identifier} is not playable and cannot enter The Record")
+    collections_by_id = {entry["collection"]["id"]: entry["collection"] for entry in entries}
+    collections = sorted(
+        collections_by_id.values(),
+        key=lambda item: (item.get("order", 9999), item["title"]),
+    )
+    entries.sort(key=lambda item: (
+        item["collection"].get("order", 9999),
+        item.get("collection_order", 9999),
+        item["title"],
+    ))
     return {
         "schema": "zeropoet-sound-archive/v1",
         "archive": "The Record",
@@ -68,6 +92,7 @@ def build_archive(manifests: list[dict]) -> dict:
             {key: manifest[key] for key in ("source_id", "authority", "canonical_url")}
             for manifest in manifests
         ],
+        "collections": collections,
         "entries": entries,
     }
 

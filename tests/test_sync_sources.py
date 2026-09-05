@@ -32,6 +32,8 @@ class SyncSourcesTests(unittest.TestCase):
         archive = MODULE.build_archive(manifests)
         self.assertEqual(archive["entries"][0]["source"]["url"], "https://example.com/voice")
         self.assertNotIn("media", archive["entries"][0])
+        self.assertEqual(archive["collections"][0]["id"], "studio-instruments")
+        self.assertEqual(archive["entries"][0]["collection_id"], "studio-instruments")
 
     def test_rejects_local_media_without_digest(self) -> None:
         manifests = [{
@@ -54,6 +56,21 @@ class SyncSourcesTests(unittest.TestCase):
         }]
         with self.assertRaisesRegex(ValueError, "not playable"):
             MODULE.build_archive(manifests)
+
+    def test_preserves_typed_source_collections(self) -> None:
+        collection = {"id": "questions", "title": "Questions", "type": "question-expressions", "order": 2}
+        manifests = [{
+            "source_id": "test", "authority": "Test", "canonical_url": "https://example.com/",
+            "entries": [{
+                "id": "question-one", "title": "Question One", "branch": "Test", "kind": "expression",
+                "availability": "public procedural score", "collection": collection,
+                "question": {"text": "What remains?"}, "source": {"url": "https://example.com/question"},
+                "sound": {"mode": "timed-score", "events": [{"at": 0, "duration": 1, "ratio": 1}]},
+            }],
+        }]
+        archive = MODULE.build_archive(manifests)
+        self.assertEqual(archive["collections"], [collection])
+        self.assertEqual(archive["entries"][0]["collection_id"], "questions")
 
 
 if __name__ == "__main__":

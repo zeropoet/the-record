@@ -21,6 +21,13 @@ hashes.
 - Source media remains in its originating repository or private source library.
 - The public archive retains an attributable source path, canonical link, and,
   for preserved media, a SHA-256 witness.
+- Sound entries remain grouped by typed collection. Studio instruments,
+  question-bearing expressions, and work voices do not collapse
+  into one undifferentiated list.
+- Each reconciliation replaces the local index from the complete latest source
+  manifests. A stable entry id identifies the sound; its current score,
+  signature, question, edition path, and collection placement come from the
+  originating archive on every sync.
 - A missing public media URL is represented as unavailable; it is never replaced
   with a copy or an invented stream.
 - Listening begins only after explicit visitor action.
@@ -38,6 +45,11 @@ an earlier reconciliation; the daily run repairs anything missed.
 
 Sound media is not sent through propagation. Credentials, private files,
 customer data, unpublished work, and free-form instructions are prohibited.
+
+Root Logos publishes its current system voices, every playable admitted work,
+and its question-bearing tonal expressions. The Record renders these as
+separate collections and performs event and timed scores from their published
+data rather than substituting a generic voice.
 
 ## Local verification
 
