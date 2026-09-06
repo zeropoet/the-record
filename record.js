@@ -1,5 +1,5 @@
 import { buildKernelField, FOLDKERNEL, stableHash } from "./record-kernel.js?v=3";
-import { compatibilityWithSelection, MAX_LAYERS, rankedCandidates } from "./compatibility.js?v=1";
+import { compatibilityWithSelection, rankedCandidates } from "./compatibility.js?v=1";
 
 const canvas = document.querySelector("#field");
 const context = canvas.getContext("2d");
@@ -279,10 +279,7 @@ function toggle(id) {
   const entry = state.catalog.entries.find((item) => item.id === id);
   if (!entry || !isPlayable(entry)) return;
   if (state.selected.has(id)) state.selected.delete(id);
-  else if (state.selected.size >= MAX_LAYERS) {
-    compatibilityState.textContent = `The assembly is held at ${MAX_LAYERS} layers. Remove one voice before adding another.`;
-    return;
-  } else state.selected.add(id);
+  else state.selected.add(id);
   renderArchive(); renderAssembly(); audio?.reconcile();
 }
 
@@ -296,21 +293,19 @@ function renderAssembly() {
 
 function renderCompatibility(entries) {
   const selectedWorks = entries.filter(({ collection_id }) => collection_id === "root-logos-works");
-  layerCount.textContent = `${entries.length} / ${MAX_LAYERS} layers`;
+  layerCount.textContent = `${entries.length} layers / open assembly`;
   if (!selectedWorks.length) {
     compatibilityState.textContent = "Choose one Root Logos work to reveal compatible next layers.";
     compatibilityList.innerHTML = "";
     return;
   }
   const ranked = rankedCandidates(state.catalog.entries, selectedWorks, 5);
-  compatibilityState.textContent = entries.length >= MAX_LAYERS
-    ? "Layer ceiling reached. The relations below remain visible as alternate decisions."
-    : "Measured from harmonic fit, tempo relation, breathing room, and register separation. Listening remains decisive.";
+  compatibilityState.textContent = "Measured from harmonic fit, tempo relation, breathing room, and register separation. Listening remains decisive.";
   compatibilityList.innerHTML = ranked.map(({ entry, fit }, index) => `<li>
     <span>${String(index + 1).padStart(2, "0")}</span>
     <div><strong>${entry.title}</strong><small>${fit.reason}</small></div>
     <b data-grade="${fit.grade}">${fit.score}</b>
-    <button type="button" data-compatible="${entry.id}" ${entries.length >= MAX_LAYERS ? "disabled" : ""}>Layer</button>
+    <button type="button" data-compatible="${entry.id}">Layer</button>
   </li>`).join("");
   compatibilityList.querySelectorAll("button").forEach((button) => button.addEventListener("click", () => toggle(button.dataset.compatible)));
 }

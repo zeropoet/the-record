@@ -8,7 +8,7 @@
     Source construction: purchase page section 03, The record.
     Construction: one full-frame circle, one square inset 27 percent, and one vertical line inset 13 percent.
   </metadata>
-  <g fill="none" stroke="#111111" stroke-width="14.222222" stroke-linecap="butt" stroke-linejoin="miter">
+  <g fill="none" stroke="#111111" stroke-width="32" stroke-linecap="square" stroke-linejoin="miter">
     <circle cx="512" cy="512" r="504.888889"/>
     <rect x="283.591111" y="283.591111" width="456.817778" height="456.817778"/>
     <path d="M512 133.12V890.88"/>
