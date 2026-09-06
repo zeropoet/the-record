@@ -1,5 +1,9 @@
 # The Record
 
+## Place in the studio architecture
+
+This repository is an independently governed module and archive authority. [`zeropoet.xyz`](https://zeropoet.xyz/) is the studio index: it makes this work and its relations legible without absorbing them. [`rootlogos.com`](https://rootlogos.com/) is the public surface of synthesis: it can use The Record's bounded declarations compositionally without replacing source masters, archive histories, or playback intent. This separation fulfills the system's working law—preserve authority at the source, reveal relation at studio scale, and permit synthesis without possession—as Root Logos enters its Weave era.
+
 The Record is the navigable sound archive of the Zeropoet studio, published at
 [`record.zeropoet.xyz`](https://record.zeropoet.xyz/). It gathers references to
 preserved masters, deterministic instruments, procedural voices, and
