@@ -11,7 +11,7 @@
   <meta property="og:type" content="website">
   <link rel="canonical" href="https://record.zeropoet.xyz/">
   <link rel="icon" href="assets/sovereign-standard-record-mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="styles.css?v=5">
   <title>The Record — Zeropoet</title>
 </head>
 <body>
@@ -19,7 +19,7 @@
     <a class="identity" href="./" aria-label="The Record home">
       <img src="assets/sovereign-standard-record-mark.svg" alt="">
     </a>
-    <h1>The Record</h1>
+      <h1>The Record <span>/ Sound held in relation</span></h1>
     <button id="listen" type="button" aria-pressed="false">Listen</button>
   </header>
 
@@ -28,21 +28,21 @@
       <div class="field-wrap">
         <canvas id="field" tabindex="0" aria-label="Navigable map of archived sound structures"></canvas>
         <div class="field-state" aria-live="polite">
-          <span id="field-label">Move through the field</span>
+          <span id="field-label">Move through the sounding field</span>
           <span id="kernel-label">FoldKernel 1.0.5 / awaiting archive</span>
           <span id="timecode">00:00:00</span>
         </div>
       </div>
 
       <div class="record-statement">
-        <p class="eyebrow">Sound Archive / Compositional Field</p>
-        <p>Every sound remains<br>where it was made.</p>
+        <p class="eyebrow">01 / Sound Archive / Compositional Field</p>
+        <p>Every sound remains<br><em>where it was made.</em></p>
       </div>
 
       <div class="assembly" aria-labelledby="assembly-title">
         <header>
           <div>
-            <p class="eyebrow">Open Assembly / 001</p>
+            <p class="eyebrow">02 / Open Assembly / 001</p>
             <h2 id="assembly-title">A provisional way to compose.</h2>
           </div>
           <button id="clear" type="button">Clear</button>
@@ -63,7 +63,7 @@
     <section class="archive" aria-labelledby="archive-title">
       <header class="archive-header">
         <div>
-          <p class="eyebrow">Canonical Index</p>
+          <p class="eyebrow">03 / Canonical Index</p>
           <h2 id="archive-title">The archive is distributed.</h2>
         </div>
         <p><span id="record-count">0</span> sounds<br><span id="collection-count">0</span> collections</p>
@@ -78,6 +78,6 @@
   </footer>
 
   <noscript>The Record requires JavaScript to sound and draw its archive. Its machine-readable index remains available.</noscript>
-  <script type="module" src="record.js?v=7"></script>
+  <script type="module" src="record.js?v=8"></script>
 </body>
 </html>

@@ -245,10 +245,13 @@ function draw(now) {
   context.clearRect(0, 0, width, height);
   const center = state.layout.center;
   context.lineWidth = 1;
+  const fieldDriftX = reducedMotion ? 0 : Math.sin(now * .000055) * Math.min(18, width * .018);
+  const fieldDriftY = reducedMotion ? 0 : Math.cos(now * .000047) * Math.min(12, height * .014);
   state.nodes.forEach((node) => {
-    const drift = reducedMotion ? 0 : Math.sin(now * .00022 + node.phase) * 5;
-    node.drawX = node.x + drift;
-    node.drawY = node.y + Math.cos(now * .00017 + node.phase) * 4;
+    const oscillationX = reducedMotion ? 0 : Math.sin(now * .00028 + node.phase) * 7;
+    const oscillationY = reducedMotion ? 0 : Math.cos(now * .00021 + node.phase * 1.31) * 5.5;
+    node.drawX = node.x + fieldDriftX + oscillationX;
+    node.drawY = node.y + fieldDriftY + oscillationY;
   });
   state.edges.forEach((edge) => {
     const a = state.nodes[edge.a], b = state.nodes[edge.b];
@@ -262,7 +265,8 @@ function draw(now) {
   });
   state.nodes.forEach((node, index) => {
     const selected = state.selected.has(node.entry.id), hovered = index === state.hover;
-    context.beginPath(); context.arc(node.drawX, node.drawY, hovered ? 8 : selected ? 5 : 2.2, 0, Math.PI * 2);
+    const breath = reducedMotion ? 0 : Math.sin(now * .0011 + node.phase) * .45;
+    context.beginPath(); context.arc(node.drawX, node.drawY, Math.max(1.6, (hovered ? 8 : selected ? 5 : 2.2) + breath), 0, Math.PI * 2);
     context.fillStyle = selected || hovered ? "#f5f5f2" : node.entry.sound ? "rgba(245,245,242,.52)" : "rgba(245,245,242,.2)"; context.fill();
   });
   context.beginPath(); context.arc(center.x, center.y, 3.5, 0, Math.PI * 2); context.fillStyle = "#f5f5f2"; context.fill();
