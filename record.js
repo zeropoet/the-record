@@ -1,4 +1,5 @@
 import { buildKernelField, FOLDKERNEL, stableHash } from "./record-kernel.js?v=3";
+import { compatibilityWithSelection, MAX_LAYERS, rankedCandidates } from "./compatibility.js?v=1";
 
 const canvas = document.querySelector("#field");
 const context = canvas.getContext("2d");
@@ -7,6 +8,9 @@ const clearButton = document.querySelector("#clear");
 const archiveList = document.querySelector("#archive-list");
 const assemblyList = document.querySelector("#assembly-list");
 const assemblyEmpty = document.querySelector("#assembly-empty");
+const compatibilityList = document.querySelector("#compatibility-list");
+const compatibilityState = document.querySelector("#compatibility-state");
+const layerCount = document.querySelector("#layer-count");
 const fieldLabel = document.querySelector("#field-label");
 const kernelLabel = document.querySelector("#kernel-label");
 const timecode = document.querySelector("#timecode");
@@ -76,7 +80,7 @@ class RecordAudio {
     const voiceGain = this.context.createGain();
     voiceGain.gain.value = Number(renderer.masterGain || .36) * Number(renderer.outputGain || 2) / Math.sqrt(playableCount);
     this.connectContract(voiceGain, renderer);
-    const voice = { gain: voiceGain, oscillators: new Set(), timer: null, cursor: 0 };
+    const voice = { gain: voiceGain, baseGain: Number(renderer.masterGain || .36) * Number(renderer.outputGain || 2), oscillators: new Set(), timer: null, cursor: 0 };
     const schedule = () => {
       if (!this.voices.has(entry.id) || !this.awake) return;
       const event = entry.sound.events[voice.cursor % entry.sound.events.length];
@@ -153,7 +157,7 @@ class RecordAudio {
       }
     });
     voiceGain.gain.exponentialRampToValueAtTime(Number(renderer.masterGain || .24) / Math.sqrt(playableCount), this.context.currentTime + Number(renderer.fadeInSeconds || 2.2));
-    this.voices.set(entry.id, { gain: voiceGain, oscillators });
+    this.voices.set(entry.id, { gain: voiceGain, baseGain: Number(renderer.masterGain || .24), oscillators });
   }
   reconcile() {
     if (!this.context || !this.output) return;
@@ -169,6 +173,10 @@ class RecordAudio {
       else if (engine === "sequential-event-score/v1") this.createEventVoice(entry, playable.length);
       else if (engine === "continuous-voice/v1") this.createContinuousVoice(entry, playable.length);
     });
+    for (const voice of this.voices.values()) {
+      voice.gain.gain.cancelScheduledValues(this.context.currentTime);
+      voice.gain.gain.setTargetAtTime(voice.baseGain / Math.sqrt(Math.max(1, playable.length)), this.context.currentTime, .12);
+    }
     const level = playable.length ? 1 : .0001;
     this.output.gain.setTargetAtTime(level, this.context.currentTime, .4);
   }
@@ -178,7 +186,7 @@ class RecordAudio {
     const gain = this.context.createGain();
     gain.gain.value = Number(renderer.masterGain || .24) / Math.sqrt(Math.max(1, voiceCount));
     this.connectContract(gain, renderer);
-    const voice = { gain, oscillators: new Set(), timer: 0 };
+    const voice = { gain, baseGain: Number(renderer.masterGain || .24), oscillators: new Set(), timer: 0 };
     this.voices.set(entry.id, voice);
     const scheduleCycle = () => {
       if (this.voices.get(entry.id) !== voice) return;
@@ -266,7 +274,11 @@ function draw(now) {
 function toggle(id) {
   const entry = state.catalog.entries.find((item) => item.id === id);
   if (!entry || !isPlayable(entry)) return;
-  state.selected.has(id) ? state.selected.delete(id) : state.selected.add(id);
+  if (state.selected.has(id)) state.selected.delete(id);
+  else if (state.selected.size >= MAX_LAYERS) {
+    compatibilityState.textContent = `The assembly is held at ${MAX_LAYERS} layers. Remove one voice before adding another.`;
+    return;
+  } else state.selected.add(id);
   renderArchive(); renderAssembly(); audio?.reconcile();
 }
 
@@ -275,6 +287,28 @@ function renderAssembly() {
   assemblyEmpty.hidden = entries.length > 0;
   assemblyList.innerHTML = entries.map((entry, index) => `<li><span>${String(index + 1).padStart(2, "0")}</span><span>${entry.title}</span><button type="button" data-remove="${entry.id}">Remove</button></li>`).join("");
   assemblyList.querySelectorAll("button").forEach((button) => button.addEventListener("click", () => toggle(button.dataset.remove)));
+  renderCompatibility(entries);
+}
+
+function renderCompatibility(entries) {
+  const selectedWorks = entries.filter(({ collection_id }) => collection_id === "root-logos-works");
+  layerCount.textContent = `${entries.length} / ${MAX_LAYERS} layers`;
+  if (!selectedWorks.length) {
+    compatibilityState.textContent = "Choose one Root Logos work to reveal compatible next layers.";
+    compatibilityList.innerHTML = "";
+    return;
+  }
+  const ranked = rankedCandidates(state.catalog.entries, selectedWorks, 5);
+  compatibilityState.textContent = entries.length >= MAX_LAYERS
+    ? "Layer ceiling reached. The relations below remain visible as alternate decisions."
+    : "Measured from harmonic fit, tempo relation, breathing room, and register separation. Listening remains decisive.";
+  compatibilityList.innerHTML = ranked.map(({ entry, fit }, index) => `<li>
+    <span>${String(index + 1).padStart(2, "0")}</span>
+    <div><strong>${entry.title}</strong><small>${fit.reason}</small></div>
+    <b data-grade="${fit.grade}">${fit.score}</b>
+    <button type="button" data-compatible="${entry.id}" ${entries.length >= MAX_LAYERS ? "disabled" : ""}>Layer</button>
+  </li>`).join("");
+  compatibilityList.querySelectorAll("button").forEach((button) => button.addEventListener("click", () => toggle(button.dataset.compatible)));
 }
 
 function renderArchive() {
@@ -285,13 +319,14 @@ function renderArchive() {
   archiveList.innerHTML = collections.map((collection) => {
     const entries = state.catalog.entries.filter((entry) => (entry.collection_id || "archive") === collection.id);
     if (!entries.length) return "";
+    const selectedWorks = state.catalog.entries.filter((item) => state.selected.has(item.id) && item.collection_id === "root-logos-works");
     return `<section class="record-collection" data-collection="${collection.id}">
       <header><div><p class="eyebrow">${collection.type.replaceAll("-", " ")}</p><h3>${collection.title}</h3></div><p>${String(entries.length).padStart(2, "0")} sounds</p></header>
       <div>${entries.map((entry) => { const index = recordIndex++; return `<article class="record">
     <p class="record-index">${String(index + 1).padStart(2, "0")}</p>
     <div class="record-title"><h4>${entry.title}</h4>${entry.question?.text ? `<p class="record-question">${entry.question.text}</p>` : ""}</div>
     <p class="record-kind">${entry.kind}</p>
-    <p class="record-state">${entry.availability}</p>
+    <p class="record-state">${entry.availability}${entry.collection_id === "root-logos-works" && selectedWorks.length && !state.selected.has(entry.id) ? `<span class="compatibility-mark" data-grade="${compatibilityWithSelection(entry, selectedWorks).grade}">${compatibilityWithSelection(entry, selectedWorks).score} fit</span>` : ""}</p>
     <div class="record-actions">
       ${isPlayable(entry) ? `<button type="button" data-select="${entry.id}" aria-pressed="${state.selected.has(entry.id)}">${state.selected.has(entry.id) ? "Held" : "Add"}</button>` : ""}
       <a href="${entry.source.url}" target="_blank" rel="noopener">Source</a>
@@ -319,7 +354,7 @@ listenButton.addEventListener("click", async () => {
 clearButton.addEventListener("click", () => { state.selected.clear(); renderArchive(); renderAssembly(); audio?.reconcile(); });
 document.addEventListener("visibilitychange", () => { if (document.hidden && audio?.awake) audio.context?.suspend(); else if (audio?.awake) audio.context?.resume(); });
 
-fetch("archive/sound-archive.json?v=6", { cache: "no-store" })
+fetch("archive/sound-archive.json?v=7", { cache: "no-store" })
   .then((response) => { if (!response.ok) throw new Error(`Archive ${response.status}`); return response.json(); })
   .then((catalog) => { state.catalog = catalog; state.layout = null; renderArchive(); renderAssembly(); requestAnimationFrame(draw); })
   .catch((error) => { fieldLabel.textContent = "The archive could not be resolved"; console.error(error); });

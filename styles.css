@@ -137,6 +137,24 @@ h2 { margin: 0; font-weight: 400; letter-spacing: -.04em; }
 }
 #assembly-list button { border: 0; background: none; color: var(--dim); cursor: pointer; }
 
+.compatibility { display:grid;gap:1.25rem;margin-top:1rem;padding-top:1.25rem;border-top:1px solid var(--line); }
+.compatibility > header { display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:end; }
+.compatibility h3 { margin:0;font-size:clamp(1.5rem,3vw,3.25rem);font-weight:400;letter-spacing:-.035em; }
+.compatibility > header > p,.compatibility > p { margin:0;color:var(--dim);font-family:var(--mono);font-size:.6rem;letter-spacing:.09em;text-transform:uppercase; }
+.compatibility > p { max-width:48rem;line-height:1.6; }
+#compatibility-list { margin:0;padding:0;border-top:1px solid var(--line);list-style:none; }
+#compatibility-list li { display:grid;grid-template-columns:3rem minmax(0,1fr) 3rem auto;gap:1rem;align-items:center;padding:1rem 0;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.62rem;letter-spacing:.07em;text-transform:uppercase; }
+#compatibility-list div { display:grid;gap:.35rem; }
+#compatibility-list strong { font-weight:500; }
+#compatibility-list small { color:var(--dim);font-size:.54rem;line-height:1.45; }
+#compatibility-list b { font-size:1rem;font-weight:400;text-align:right; }
+#compatibility-list b[data-grade="strong"],.compatibility-mark[data-grade="strong"] { color:var(--white); }
+#compatibility-list b[data-grade="open"],.compatibility-mark[data-grade="open"] { color:rgba(245,245,242,.68); }
+#compatibility-list b[data-grade="tension"],.compatibility-mark[data-grade="tension"] { color:rgba(245,245,242,.38); }
+#compatibility-list button { padding:.5rem 0;border:0;border-bottom:1px solid currentColor;background:none;color:var(--white);cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit; }
+#compatibility-list button:disabled { color:var(--dim);cursor:not-allowed; }
+.compatibility-mark { display:block;margin-top:.5rem;font-size:.56rem; }
+
 .archive { width: min(90rem, calc(100% - 2rem)); margin: 0 auto; }
 .archive-header { padding: 1.25rem 0 clamp(4rem, 8vw, 8rem); border-top: 1px solid var(--line); }
 .archive-header > p {
@@ -203,6 +221,9 @@ footer p { margin: 0; }
   .site-header h1 { display: none; }
   #kernel-label { display: none; }
   .assembly header, .archive-header { grid-template-columns: 1fr; }
+  .compatibility > header { grid-template-columns:1fr;gap:.75rem; }
+  #compatibility-list li { grid-template-columns:2rem minmax(0,1fr) 2.5rem; }
+  #compatibility-list button { grid-column:2 / -1;justify-self:start; }
   .archive-header > p { text-align: left; }
   .record { grid-template-columns: 2.75rem 1fr auto; }
   .record-kind, .record-state { display: none; }
