@@ -35,6 +35,12 @@ const entries = manifests.flatMap((manifest) => manifest.entries.map((entry, ind
   collection_id: (entry.collection || fallbackCollection).id,
   collection_order: Number(entry.collection_order ?? index + 1)
 })));
+const archived = JSON.parse(await readFile(resolve(root, "archive/fldfrg-archived-sounds.json"), "utf8"));
+entries.push(...archived.entries.map((entry) => ({
+  ...entry,
+  collection: entry.collection || fallbackCollection,
+  collection_id: (entry.collection || fallbackCollection).id
+})));
 const isPlayable = (entry) => Boolean(entry.sound && (
   entry.sound.rootHz || entry.sound.frequenciesHz?.length || entry.sound.events?.length
 ));

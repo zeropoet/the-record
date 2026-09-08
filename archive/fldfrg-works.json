@@ -11,8 +11,8 @@
   },
   "counts": {
     "works": 55,
-    "paired": 43,
-    "awaiting_sound": 12
+    "paired": 55,
+    "awaiting_sound": 0
   },
   "works": [
     {
@@ -194,13 +194,13 @@
     {
       "token_id": "17",
       "token_name": "16-on-the-sources-of-knowledge-and-of-ignorance",
-      "title": "On The Sources Of Knowledge And Of Ignorance",
+      "title": "On the Sources of Knowledge and of Ignorance",
       "image": "archive/fldfrg/017.png",
       "image_sha256": "2011de5b8c40f542fef89df9c7df049e5cea857db53aa6847b8f9fda37f4ae66",
       "metadata_path": "public/ethereum-archive/contracts/0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc/tokens/17/metadata.json",
-      "sound_id": null,
-      "sound_title": null,
-      "paired": false
+      "sound_id": "root-logos-archived-work-on-the-sources-of-knowledge-and-of-ignorance-cb3ae522",
+      "sound_title": "On the Sources of Knowledge and of Ignorance",
+      "paired": true
     },
     {
       "token_id": "18",
@@ -238,13 +238,13 @@
     {
       "token_id": "21",
       "token_name": "20-the-book-of-five-rings",
-      "title": "The Book Of Five Rings",
+      "title": "The Book of Five Rings (\u4e94\u8f2a\u66f8)",
       "image": "archive/fldfrg/021.png",
       "image_sha256": "0e7c6f061deda90e77faa0b83cb4b21aac1252e7518c57c9846c8018c0d9ca52",
       "metadata_path": "public/ethereum-archive/contracts/0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc/tokens/21/metadata.json",
-      "sound_id": null,
-      "sound_title": null,
-      "paired": false
+      "sound_id": "root-logos-archived-work-the-book-of-five-rings-ded07c35",
+      "sound_title": "The Book of Five Rings (\u4e94\u8f2a\u66f8)",
+      "paired": true
     },
     {
       "token_id": "22",
@@ -253,9 +253,9 @@
       "image": "archive/fldfrg/022.png",
       "image_sha256": "99eec6e5b7ef01b5ae534c5a9493d34119162e6b1bffc6b97e64a743158d4938",
       "metadata_path": "public/ethereum-archive/contracts/0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc/tokens/22/metadata.json",
-      "sound_id": null,
-      "sound_title": null,
-      "paired": false
+      "sound_id": "root-logos-archived-work-the-principal-upanishads-f91e18bd",
+      "sound_title": "The Principal Upanishads",
+      "paired": true
     },
     {
       "token_id": "23",
@@ -414,13 +414,13 @@
     {
       "token_id": "37",
       "token_name": "36-everything-and-nothing",
-      "title": "Everything And Nothing",
+      "title": "Everything and Nothing",
       "image": "archive/fldfrg/037.png",
       "image_sha256": "bf24e05cbba06577453e379a98940e86a60069e14bba479a5da5f61bd5490f98",
       "metadata_path": "public/ethereum-archive/contracts/0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc/tokens/37/metadata.json",
-      "sound_id": null,
-      "sound_title": null,
-      "paired": false
+      "sound_id": "root-logos-archived-work-everything-and-nothing-669c30b7",
+      "sound_title": "Everything and Nothing",
+      "paired": true
     },
     {
       "token_id": "38",
@@ -491,24 +491,24 @@
     {
       "token_id": "44",
       "token_name": "43-on-computable-numbers-with-an-application-to-the-entscheidungsproblem",
-      "title": "On Computable Numbers With An Application To The Entscheidungsproblem",
+      "title": "On Computable Numbers, with an Application to the Entscheidungsproblem",
       "image": "archive/fldfrg/044.png",
       "image_sha256": "2316b628aad28e8ecd7c4fc137e2f75f8d348ee97364ca6a6a47b927d3cf76f8",
       "metadata_path": "public/ethereum-archive/contracts/0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc/tokens/44/metadata.json",
-      "sound_id": null,
-      "sound_title": null,
-      "paired": false
+      "sound_id": "root-logos-archived-work-on-computable-numbers-with-an-application-to-the-entscheidungsproblem-c57b33a3",
+      "sound_title": "On Computable Numbers, with an Application to the Entscheidungsproblem",
+      "paired": true
     },
     {
       "token_id": "45",
       "token_name": "44-uber-formal-unentscheidbare-satze-der-principia-mathematica-und-verwandter-systeme-i",
-      "title": "Uber Formal Unentscheidbare Satze Der Principia Mathematica Und Verwandter Systeme I",
+      "title": "\u00dcber formal unentscheidbare S\u00e4tze der Principia Mathematica und verwandter Systeme I",
       "image": "archive/fldfrg/045.png",
       "image_sha256": "c21c0b52c51a42441e0b83eeb152c114a1c0e476a646244ed1dfc14ed7954783",
       "metadata_path": "public/ethereum-archive/contracts/0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc/tokens/45/metadata.json",
-      "sound_id": null,
-      "sound_title": null,
-      "paired": false
+      "sound_id": "root-logos-archived-work-uber-formal-unentscheidbare-satze-der-principia-mathematica-und-verwandter-systeme-i-6780b46b",
+      "sound_title": "\u00dcber formal unentscheidbare S\u00e4tze der Principia Mathematica und verwandter Systeme I",
+      "paired": true
     },
     {
       "token_id": "46",
@@ -535,13 +535,13 @@
     {
       "token_id": "48",
       "token_name": "47-the-quran-the-meaning-of-the-glorious-koran",
-      "title": "The Quran The Meaning Of The Glorious Koran",
+      "title": "The Qur\u2019an \u2014 The Meaning of the Glorious Koran",
       "image": "archive/fldfrg/048.png",
       "image_sha256": "0eb623c1bde306fb8085bd56d1eda925fe9b76aeb1b964ea8caa619c432ac895",
       "metadata_path": "public/ethereum-archive/contracts/0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc/tokens/48/metadata.json",
-      "sound_id": null,
-      "sound_title": null,
-      "paired": false
+      "sound_id": "root-logos-archived-work-the-quran-the-meaning-of-the-glorious-koran-d05be571",
+      "sound_title": "The Qur\u2019an \u2014 The Meaning of the Glorious Koran",
+      "paired": true
     },
     {
       "token_id": "49",
@@ -557,57 +557,57 @@
     {
       "token_id": "50",
       "token_name": "49-repeticion-de-amores-y-arte-de-ajedrez",
-      "title": "Repeticion De Amores Y Arte De Ajedrez",
+      "title": "Repetici\u00f3n de Amores y Arte de Ajedrez",
       "image": "archive/fldfrg/050.png",
       "image_sha256": "f820ebb0b36b02b63e9103740d2857e791b37ce50cc2ed880f1f135e256b5c0d",
       "metadata_path": "public/ethereum-archive/contracts/0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc/tokens/50/metadata.json",
-      "sound_id": null,
-      "sound_title": null,
-      "paired": false
+      "sound_id": "root-logos-archived-work-repeticion-de-amores-y-arte-de-ajedrez-2adfcfc8",
+      "sound_title": "Repetici\u00f3n de Amores y Arte de Ajedrez",
+      "paired": true
     },
     {
       "token_id": "51",
       "token_name": "50-libro-de-la-invencion-liberal-y-arte-del-juego-del-axedrez",
-      "title": "Libro De La Invencion Liberal Y Arte Del Juego Del Axedrez",
+      "title": "Libro de la invenci\u00f3n liberal y arte del juego del Axedrez",
       "image": "archive/fldfrg/051.png",
       "image_sha256": "d3a969bedc3a35e89cee8b303b571c5c0b6c483e03161732e9cfec770f46ae74",
       "metadata_path": "public/ethereum-archive/contracts/0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc/tokens/51/metadata.json",
-      "sound_id": null,
-      "sound_title": null,
-      "paired": false
+      "sound_id": "root-logos-archived-work-libro-de-la-invencion-liberal-y-arte-del-juego-del-axedrez-7a995d63",
+      "sound_title": "Libro de la invenci\u00f3n liberal y arte del juego del Axedrez",
+      "paired": true
     },
     {
       "token_id": "52",
       "token_name": "51-analyse-du-jeu-des-echecs",
-      "title": "Analyse Du Jeu Des Echecs",
+      "title": "Analyse du jeu des \u00c9checs",
       "image": "archive/fldfrg/052.png",
       "image_sha256": "1ad3e887bdefb60ccef9c0d2edfca013a23799e00c8418364d1cbeb6a08395ef",
       "metadata_path": "public/ethereum-archive/contracts/0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc/tokens/52/metadata.json",
-      "sound_id": null,
-      "sound_title": null,
-      "paired": false
+      "sound_id": "root-logos-archived-work-analyse-du-jeu-des-echecs-dd0f70b3",
+      "sound_title": "Analyse du jeu des \u00c9checs",
+      "paired": true
     },
     {
       "token_id": "53",
       "token_name": "52-laws-of-the-game",
-      "title": "Laws Of The Game",
+      "title": "Laws of the Game",
       "image": "archive/fldfrg/053.png",
       "image_sha256": "0cf85b9d74671caf5b42e7b8c9d6bf25f82555535ec2545acbbf9636c2d0643c",
       "metadata_path": "public/ethereum-archive/contracts/0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc/tokens/53/metadata.json",
-      "sound_id": null,
-      "sound_title": null,
-      "paired": false
+      "sound_id": "root-logos-archived-work-laws-of-the-game-8500de86",
+      "sound_title": "Laws of the Game",
+      "paired": true
     },
     {
       "token_id": "54",
       "token_name": "53-on-the-sensations-of-tone-as-a-physiological-basis-for-the-theory-of-music",
-      "title": "On The Sensations Of Tone As A Physiological Basis For The Theory Of Music",
+      "title": "On the Sensations of Tone as a Physiological Basis for the Theory of Music",
       "image": "archive/fldfrg/054.png",
       "image_sha256": "1ad3e887bdefb60ccef9c0d2edfca013a23799e00c8418364d1cbeb6a08395ef",
       "metadata_path": "public/ethereum-archive/contracts/0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc/tokens/54/metadata.json",
-      "sound_id": null,
-      "sound_title": null,
-      "paired": false
+      "sound_id": "root-logos-archived-work-on-the-sensations-of-tone-as-a-physiological-basis-for-the-theory-of-music-c5ba1f49",
+      "sound_title": "On the Sensations of Tone as a Physiological Basis for the Theory of Music",
+      "paired": true
     },
     {
       "token_id": "55",

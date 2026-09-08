@@ -1,57 +1,64 @@
-  <!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="The Record is the navigable sound archive of the Zeropoet studio.">
+  <meta name="description" content="The Record is the operational sound archive of the Zeropoet studio.">
   <meta name="theme-color" content="#050505">
   <meta property="og:title" content="The Record — Zeropoet">
-  <meta property="og:description" content="Preserved recordings, deterministic voices, and compositional structures held across the Zeropoet studio.">
+  <meta property="og:description" content="Work voices, system instruments, and their visible Ethereum bodies held in one compositional field.">
   <meta property="og:url" content="https://record.zeropoet.xyz/">
   <meta property="og:type" content="website">
   <link rel="canonical" href="https://record.zeropoet.xyz/">
   <link rel="icon" href="assets/sovereign-standard-record-mark.svg?v=2" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
   <title>The Record — Zeropoet</title>
 </head>
 <body>
   <header class="site-header">
-    <a class="identity" href="./" aria-label="The Record home">
-      <img src="assets/sovereign-standard-record-mark.svg?v=2" alt="">
-    </a>
-      <h1>The Record <span>/ Sound held in relation</span></h1>
+    <a class="identity" href="./" aria-label="The Record home"><img src="assets/sovereign-standard-record-mark.svg?v=2" alt=""></a>
+    <p>The Record <span>/ Operators in relation</span></p>
     <button id="listen" type="button" aria-pressed="false">Listen</button>
   </header>
 
   <main>
-    <section class="contract-library" aria-labelledby="contract-title">
-      <header class="contract-heading">
+    <section class="console" aria-labelledby="console-title">
+      <header class="console-heading">
         <div>
-          <p class="eyebrow">01 / Ethereum Contract / Audible Library</p>
-          <h2 id="contract-title">The work has<br>a visible body.</h2>
+          <p class="eyebrow">01 / Compositional operators</p>
+          <h1 id="console-title">Sound has<br><em>a body.</em></h1>
         </div>
-        <div class="contract-proof">
-          <p><span id="contract-count">00</span> contract works</p>
-          <p><span id="paired-count">00</span> paired voices</p>
+        <div class="console-counts">
+          <p><span id="record-count">00</span> playable operators</p>
+          <p><span id="contract-count">00</span> local work images</p>
+          <p><span id="paired-count">00</span> exact pairings</p>
           <a id="contract-link" href="https://etherscan.io/address/0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc" target="_blank" rel="noopener">FLDFRG / Ethereum ↗</a>
         </div>
       </header>
-      <div class="contract-focus">
-        <figure class="contract-image-wrap">
-          <img id="contract-image" alt="">
-          <figcaption id="contract-token">FLDFRG / awaiting contract</figcaption>
-        </figure>
-        <div class="contract-detail" aria-live="polite">
-          <p class="eyebrow" id="contract-state">Contract image / library voice</p>
-          <h3 id="contract-work-title">Resolving the archive</h3>
-          <p id="contract-description">Each Ethereum work is paired with the sound generated from the same Root Logos library work.</p>
-          <button id="contract-add" type="button" disabled>Awaiting sound</button>
+
+      <aside class="baseline" aria-labelledby="baseline-title">
+        <div class="baseline-pulse" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div>
+          <p class="eyebrow">Heartbeat / Baseline atmosphere</p>
+          <h2 id="baseline-title">Resonant Holdings</h2>
+          <p>A quiet ground beneath the open assembly. Hold it independently, then place every other voice in relation to it.</p>
         </div>
-      </div>
-      <ol id="contract-grid" class="contract-grid" aria-label="FLDFRG contract works"></ol>
+        <button id="baseline-toggle" type="button" aria-pressed="false">Hold baseline</button>
+      </aside>
+
+      <nav class="operator-controls" aria-label="Operator view controls">
+        <div class="operator-filters" role="group" aria-label="Filter operators">
+          <button type="button" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" data-filter="works" aria-pressed="false">Works</button>
+          <button type="button" data-filter="system" aria-pressed="false">System</button>
+        </div>
+        <button id="visual-toggle" type="button" aria-pressed="true">Images on</button>
+      </nav>
+
+      <ol id="operator-grid" class="operator-grid" aria-label="Sound operators"></ol>
     </section>
 
-    <section class="instrument" aria-label="The Record sound archive and compositional field">
+    <section class="instrument" aria-label="Compositional field">
       <div class="field-wrap">
         <canvas id="field" tabindex="0" aria-label="Navigable map of archived sound structures"></canvas>
         <div class="field-state" aria-live="polite">
@@ -61,24 +68,16 @@
         </div>
       </div>
 
-      <div class="record-statement">
-          <p class="eyebrow">02 / Sound Archive / Compositional Field</p>
-        <p>Every sound remains<br><em>where it was made.</em></p>
-      </div>
-
       <div class="assembly" aria-labelledby="assembly-title">
         <header>
-          <div>
-            <p class="eyebrow">03 / Open Assembly / 001</p>
-            <h2 id="assembly-title">A provisional way to compose.</h2>
-          </div>
+          <div><p class="eyebrow">02 / Open assembly</p><h2 id="assembly-title">Held in relation.</h2></div>
           <button id="clear" type="button">Clear</button>
         </header>
-        <p id="assembly-empty">Select any sounding structure in the archive. Each addition changes one shared field; no source is overwritten.</p>
+        <p id="assembly-empty">Choose any operator above or in the field. Work voices, system instruments, and the baseline share one assembly without surrendering their source.</p>
         <ol id="assembly-list" aria-label="Selected sound structures"></ol>
         <section class="compatibility" aria-labelledby="compatibility-title">
           <header>
-            <div><p class="eyebrow">Compatibility Lens</p><h3 id="compatibility-title">Audible relations</h3></div>
+            <div><p class="eyebrow">Compatibility lens</p><h3 id="compatibility-title">Audible relations</h3></div>
             <p id="layer-count">0 layers / open assembly</p>
           </header>
           <p id="compatibility-state">Choose one Root Logos work to reveal compatible next layers.</p>
@@ -86,25 +85,14 @@
         </section>
       </div>
     </section>
-
-    <section class="archive" aria-labelledby="archive-title">
-      <header class="archive-header">
-        <div>
-          <p class="eyebrow">04 / Canonical Index</p>
-          <h2 id="archive-title">The archive is distributed.</h2>
-        </div>
-        <p><span id="record-count">0</span> sounds<br><span id="collection-count">0</span> collections</p>
-      </header>
-      <div id="archive-list" class="archive-list"></div>
-    </section>
   </main>
 
   <footer>
-    <p>Sources remain sovereign. Relations remain revisable.</p>
-    <a href="archive/sound-archive.json">Machine-readable record</a>
+    <p>Local bodies. Sovereign voices. Reversible relations.</p>
+    <div><a href="archive/fldfrg-works.json">Visual record</a><a href="archive/sound-archive.json">Sound record</a></div>
   </footer>
 
-  <noscript>The Record requires JavaScript to sound and draw its archive. Its machine-readable index remains available.</noscript>
-  <script type="module" src="record.js?v=10"></script>
+  <noscript>The Record requires JavaScript to sound and draw its archive. Its machine-readable indexes remain available.</noscript>
+  <script type="module" src="record.js?v=11"></script>
 </body>
 </html>

@@ -27,6 +27,19 @@ field, but it never changes a master recording, source witness, or archive
 authority. Application-level hashes are not presented as FoldKernel convergence
 hashes.
 
+The public interface merges the contract bodies with the sound-only archive in
+one operator panel. Images are an optional view of the same operators:
+switching them off preserves every sound, selection, and relation. System
+voices use signal marks instead of invented covers. Resonant Holdings is
+exposed separately as the heartbeat/baseline atmosphere so it can be held
+beneath an assembly without being mistaken for an ordinary work.
+
+An FLDFRG work may leave the active Root Logos Library without losing its
+minted sound lineage. The Record retains the deterministic score from that
+work's final admitted edition and marks it as contract-archived rather than
+active. Future synchronization merges those archived voices after the current
+source manifests, then rematches the complete contract.
+
 ## Boundary
 
 - Source media remains in its originating repository or private source library.

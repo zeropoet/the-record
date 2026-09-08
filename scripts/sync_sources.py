@@ -19,6 +19,7 @@ POLICY = ROOT / "propagation" / "sources.json"
 TARGET = ROOT / "archive" / "sound-archive.json"
 FLDFRG_TARGET = ROOT / "archive" / "fldfrg-works.json"
 FLDFRG_MEDIA = ROOT / "archive" / "fldfrg"
+FLDFRG_ARCHIVED_SOUNDS = ROOT / "archive" / "fldfrg-archived-sounds.json"
 FLDFRG_ADDRESS = "0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc"
 FOLDFORGE_ORIGIN = "https://foldforge.zeropoet.xyz"
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
@@ -110,7 +111,7 @@ def validate_manifest(source: dict, manifest: dict) -> None:
         raise ValueError(f"{source['id']} manifest is invalid")
 
 
-def build_archive(manifests: list[dict]) -> dict:
+def build_archive(manifests: list[dict], archived_entries: list[dict] | None = None) -> dict:
     fallback_collection = {
         "id": "studio-instruments",
         "title": "Studio Instruments",
@@ -126,6 +127,12 @@ def build_archive(manifests: list[dict]) -> dict:
             entry["collection_id"] = collection["id"]
             entry["collection_order"] = entry.get("collection_order", index + 1)
             entries.append(entry)
+    for source_entry in archived_entries or []:
+        entry = dict(source_entry)
+        collection = entry.get("collection") or fallback_collection
+        entry["collection"] = collection
+        entry["collection_id"] = collection["id"]
+        entries.append(entry)
     seen: set[str] = set()
     for entry in entries:
         identifier = entry.get("id")
@@ -238,7 +245,10 @@ def main() -> int:
         manifest = read_json(Path(local[source["id"]])) if source["id"] in local else load_remote(source["manifest_url"])
         validate_manifest(source, manifest)
         manifests.append(manifest)
-    archive = build_archive(manifests)
+    archived_contract_voices = read_json(FLDFRG_ARCHIVED_SOUNDS)
+    if archived_contract_voices.get("schema") != "the-record-fldfrg-archived-sounds/v1":
+        raise ValueError("invalid FLDFRG archived sound manifest")
+    archive = build_archive(manifests, archived_contract_voices["entries"])
     write_atomic(TARGET, archive)
     contract_root = arguments.fldfrg_contract_root
     if contract_root is None and "foldforge" in local:

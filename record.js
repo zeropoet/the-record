@@ -1,11 +1,13 @@
 import { buildKernelField, FOLDKERNEL, stableHash } from "./record-kernel.js?v=3";
-import { compatibilityWithSelection, rankedCandidates } from "./compatibility.js?v=1";
+import { rankedCandidates } from "./compatibility.js?v=1";
 
 const canvas = document.querySelector("#field");
 const context = canvas.getContext("2d");
 const listenButton = document.querySelector("#listen");
 const clearButton = document.querySelector("#clear");
-const archiveList = document.querySelector("#archive-list");
+const operatorGrid = document.querySelector("#operator-grid");
+const visualToggle = document.querySelector("#visual-toggle");
+const baselineToggle = document.querySelector("#baseline-toggle");
 const assemblyList = document.querySelector("#assembly-list");
 const assemblyEmpty = document.querySelector("#assembly-empty");
 const compatibilityList = document.querySelector("#compatibility-list");
@@ -14,16 +16,22 @@ const layerCount = document.querySelector("#layer-count");
 const fieldLabel = document.querySelector("#field-label");
 const kernelLabel = document.querySelector("#kernel-label");
 const timecode = document.querySelector("#timecode");
-const contractImage = document.querySelector("#contract-image");
-const contractToken = document.querySelector("#contract-token");
-const contractState = document.querySelector("#contract-state");
-const contractTitle = document.querySelector("#contract-work-title");
-const contractDescription = document.querySelector("#contract-description");
-const contractAdd = document.querySelector("#contract-add");
-const contractGrid = document.querySelector("#contract-grid");
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const state = { catalog: null, contract: null, contractIndex: 0, nodes: [], edges: [], layout: null, selected: new Set(), hover: -1, pointer: { x: 0, y: 0 }, started: performance.now() };
+const BASELINE_ID = "foldforge-resonant-holdings";
+const state = {
+  catalog: null,
+  contract: null,
+  nodes: [],
+  edges: [],
+  layout: null,
+  selected: new Set(),
+  hover: -1,
+  pointer: { x: 0, y: 0 },
+  started: performance.now(),
+  filter: "all",
+  visuals: true
+};
 let audio;
 const isPlayable = (entry) => Boolean(entry.sound && (
   entry.sound.rootHz || entry.sound.frequenciesHz?.length || entry.sound.events?.length
@@ -282,39 +290,87 @@ function draw(now) {
   requestAnimationFrame(draw);
 }
 
-function renderContract() {
-  if (!state.contract) return;
-  const works = state.contract.works || [];
-  const work = works[state.contractIndex] || works[0];
+function renderOperators() {
+  if (!state.catalog || !state.contract) return;
+  const workBySound = new Map();
+  state.contract.works.filter((work) => work.sound_id).forEach((work) => {
+    if (!workBySound.has(work.sound_id)) workBySound.set(work.sound_id, work);
+  });
+  const playable = state.catalog.entries.filter(isPlayable);
+  const entries = playable.filter((entry) => {
+    if (entry.id === BASELINE_ID) return false;
+    if (state.filter === "works") return entry.collection_id === "root-logos-works";
+    if (state.filter === "system") return entry.collection_id !== "root-logos-works";
+    return true;
+  });
+  document.querySelector("#record-count").textContent = String(playable.length).padStart(2, "0");
   document.querySelector("#contract-count").textContent = String(state.contract.counts.works).padStart(2, "0");
   document.querySelector("#paired-count").textContent = String(state.contract.counts.paired).padStart(2, "0");
   document.querySelector("#contract-link").href = state.contract.contract.url;
-  if (!work) return;
-  const sound = work.sound_id ? state.catalog.entries.find((entry) => entry.id === work.sound_id) : null;
-  const held = sound && state.selected.has(sound.id);
-  contractImage.src = work.image;
-  contractImage.alt = work.title + " contract image";
-  contractToken.textContent = "FLDFRG / " + String(work.token_id).padStart(3, "0");
-  contractState.textContent = work.paired ? "Contract image / matched library voice" : "Contract image / voice not yet present";
-  contractTitle.textContent = work.title;
-  contractDescription.textContent = work.paired
-    ? "The image is held by token identity. Its sound remains the current Root Logos library voice for the same work."
-    : "The contract work remains visible and witnessed. No unrelated sound has been assigned to it.";
-  contractAdd.disabled = !sound;
-  contractAdd.textContent = !sound ? "Awaiting sound" : held ? "Remove sound" : "Add sound";
-  contractAdd.setAttribute("aria-pressed", held ? "true" : "false");
-  contractAdd.dataset.soundId = sound?.id || "";
-  contractGrid.innerHTML = works.map((item, index) =>
-    '<li><button type="button" data-contract-index="' + index + '" aria-pressed="' + (index === state.contractIndex) + '">' +
-      '<img src="' + item.image + '" alt="">' +
-      '<span><strong>' + item.title + '</strong><small>FLDFRG ' + String(item.token_id).padStart(3, "0") + ' / ' + (item.paired ? "Voice paired" : "Awaiting voice") + '</small></span>' +
-    '</button></li>'
-  ).join("");
-  contractGrid.querySelectorAll("button").forEach((button) => button.addEventListener("click", () => {
-    state.contractIndex = Number(button.dataset.contractIndex);
-    renderContract();
-    contractImage.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "center" });
-  }));
+  document.body.classList.toggle("images-hidden", !state.visuals);
+  visualToggle.textContent = state.visuals ? "Images on" : "Images off";
+  visualToggle.setAttribute("aria-pressed", String(state.visuals));
+  document.querySelectorAll("[data-filter]").forEach((button) =>
+    button.setAttribute("aria-pressed", String(button.dataset.filter === state.filter))
+  );
+  const baselineHeld = state.selected.has(BASELINE_ID);
+  baselineToggle.setAttribute("aria-pressed", String(baselineHeld));
+  baselineToggle.textContent = baselineHeld ? "Release baseline" : "Hold baseline";
+
+  const activeCards = entries.map((entry, index) => {
+    const work = workBySound.get(entry.id);
+    const category = entry.collection_id === "root-logos-works" ? "Work voice" : "System voice";
+    const media = work
+      ? `<figure><img src="${work.image}" alt="" loading="lazy"><figcaption>FLDFRG ${String(work.token_id).padStart(3, "0")}</figcaption></figure>`
+      : `<div class="operator-signal" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>`;
+    return `<li class="operator ${work ? "has-image" : "system-operator"}">
+      <button class="operator-select" type="button" data-select="${entry.id}" aria-pressed="${state.selected.has(entry.id)}">
+        ${media}
+        <span class="operator-meta">
+          <small>${String(index + 1).padStart(2, "0")} / ${category}</small>
+          <strong>${entry.title}</strong>
+          <span>${entry.kind}</span>
+          <b>${state.selected.has(entry.id) ? "Held" : "Add"}</b>
+        </span>
+      </button>
+      <a href="${entry.source.url}" target="_blank" rel="noopener" aria-label="Open source for ${entry.title}">↗</a>
+    </li>`;
+  });
+  const pairedExtras = state.filter === "system" ? [] : state.contract.works
+    .filter((work) => work.sound_id && workBySound.get(work.sound_id) !== work)
+    .map((work, index) => {
+      const entry = state.catalog.entries.find((item) => item.id === work.sound_id);
+      return `<li class="operator has-image">
+        <button class="operator-select" type="button" data-select="${work.sound_id}" aria-pressed="${state.selected.has(work.sound_id)}">
+          <figure><img src="${work.image}" alt="" loading="lazy"><figcaption>FLDFRG ${String(work.token_id).padStart(3, "0")}</figcaption></figure>
+          <span class="operator-meta">
+            <small>${String(activeCards.length + index + 1).padStart(2, "0")} / Shared work voice</small>
+            <strong>${work.title}</strong>
+            <span>Distinct token body / shared library voice</span>
+            <b>${state.selected.has(work.sound_id) ? "Held" : "Add"}</b>
+          </span>
+        </button>
+        <a href="${entry?.source.url || state.contract.contract.url}" target="_blank" rel="noopener" aria-label="Open source for ${work.title}">↗</a>
+      </li>`;
+    });
+  const awaitingCards = state.filter === "system" ? [] : state.contract.works
+    .filter((work) => !work.sound_id)
+    .map((work, index) => `<li class="operator has-image awaiting-operator" data-kind="Work awaiting voice">
+      <div class="operator-select" aria-disabled="true">
+        <figure><img src="${work.image}" alt="" loading="lazy"><figcaption>FLDFRG ${String(work.token_id).padStart(3, "0")}</figcaption></figure>
+        <span class="operator-meta">
+          <small>${String(activeCards.length + pairedExtras.length + index + 1).padStart(2, "0")} / Contract work</small>
+          <strong>${work.title}</strong>
+          <span>Local image / voice not yet present</span>
+          <b>Awaiting sound</b>
+        </span>
+      </div>
+      <a href="${state.contract.contract.url}" target="_blank" rel="noopener" aria-label="Inspect FLDFRG contract">↗</a>
+    </li>`);
+  operatorGrid.innerHTML = [...activeCards, ...pairedExtras, ...awaitingCards].join("");
+  operatorGrid.querySelectorAll("[data-select]").forEach((button) =>
+    button.addEventListener("click", () => toggle(button.dataset.select))
+  );
 }
 
 function toggle(id) {
@@ -322,7 +378,7 @@ function toggle(id) {
   if (!entry || !isPlayable(entry)) return;
   if (state.selected.has(id)) state.selected.delete(id);
   else state.selected.add(id);
-  renderArchive(); renderAssembly(); renderContract(); audio?.reconcile();
+  renderOperators(); renderAssembly(); audio?.reconcile();
 }
 
 function renderAssembly() {
@@ -352,31 +408,6 @@ function renderCompatibility(entries) {
   compatibilityList.querySelectorAll("button").forEach((button) => button.addEventListener("click", () => toggle(button.dataset.compatible)));
 }
 
-function renderArchive() {
-  document.querySelector("#record-count").textContent = String(state.catalog.entries.length).padStart(2, "0");
-  document.querySelector("#collection-count").textContent = String(state.catalog.collections?.length || 1).padStart(2, "0");
-  const collections = state.catalog.collections?.length ? state.catalog.collections : [{ id: "archive", title: "Sound Archive", type: "sound-structures" }];
-  let recordIndex = 0;
-  archiveList.innerHTML = collections.map((collection) => {
-    const entries = state.catalog.entries.filter((entry) => (entry.collection_id || "archive") === collection.id);
-    if (!entries.length) return "";
-    const selectedWorks = state.catalog.entries.filter((item) => state.selected.has(item.id) && item.collection_id === "root-logos-works");
-    return `<section class="record-collection" data-collection="${collection.id}">
-      <header><div><p class="eyebrow">${collection.type.replaceAll("-", " ")}</p><h3>${collection.title}</h3></div><p>${String(entries.length).padStart(2, "0")} sounds</p></header>
-      <div>${entries.map((entry) => { const index = recordIndex++; return `<article class="record">
-    <p class="record-index">${String(index + 1).padStart(2, "0")}</p>
-    <div class="record-title"><h4>${entry.title}</h4>${entry.question?.text ? `<p class="record-question">${entry.question.text}</p>` : ""}</div>
-    <p class="record-kind">${entry.kind}</p>
-    <p class="record-state">${entry.availability}${entry.collection_id === "root-logos-works" && selectedWorks.length && !state.selected.has(entry.id) ? `<span class="compatibility-mark" data-grade="${compatibilityWithSelection(entry, selectedWorks).grade}">${compatibilityWithSelection(entry, selectedWorks).score} fit</span>` : ""}</p>
-    <div class="record-actions">
-      ${isPlayable(entry) ? `<button type="button" data-select="${entry.id}" aria-pressed="${state.selected.has(entry.id)}">${state.selected.has(entry.id) ? "Held" : "Add"}</button>` : ""}
-      <a href="${entry.source.url}" target="_blank" rel="noopener">Source</a>
-    </div>
-  </article>`; }).join("")}</div></section>`;
-  }).join("");
-  archiveList.querySelectorAll("button").forEach((button) => button.addEventListener("click", () => toggle(button.dataset.select)));
-}
-
 canvas.addEventListener("pointermove", (event) => {
   const rect = canvas.getBoundingClientRect(); state.pointer = { x: event.clientX - rect.left, y: event.clientY - rect.top };
   state.hover = state.nodes.findIndex((node) => Math.hypot(node.drawX - state.pointer.x, node.drawY - state.pointer.y) < 18);
@@ -390,12 +421,15 @@ canvas.addEventListener("keydown", (event) => {
 listenButton.addEventListener("click", async () => {
   audio ||= new RecordAudio();
   if (audio.awake) { audio.stop(); listenButton.textContent = "Listen"; listenButton.setAttribute("aria-pressed", "false"); }
-  else { if (!state.selected.size) state.catalog.entries.filter(isPlayable).slice(0, 2).forEach(({ id }) => state.selected.add(id)); await audio.start(); renderArchive(); renderAssembly(); renderContract(); listenButton.textContent = "Silence"; listenButton.setAttribute("aria-pressed", "true"); }
+  else { if (!state.selected.size) state.selected.add(BASELINE_ID); await audio.start(); renderOperators(); renderAssembly(); listenButton.textContent = "Silence"; listenButton.setAttribute("aria-pressed", "true"); }
 });
-clearButton.addEventListener("click", () => { state.selected.clear(); renderArchive(); renderAssembly(); renderContract(); audio?.reconcile(); });
-contractAdd.addEventListener("click", () => {
-  if (contractAdd.dataset.soundId) toggle(contractAdd.dataset.soundId);
-});
+clearButton.addEventListener("click", () => { state.selected.clear(); renderOperators(); renderAssembly(); audio?.reconcile(); });
+baselineToggle.addEventListener("click", () => toggle(BASELINE_ID));
+visualToggle.addEventListener("click", () => { state.visuals = !state.visuals; renderOperators(); });
+document.querySelectorAll("[data-filter]").forEach((button) => button.addEventListener("click", () => {
+  state.filter = button.dataset.filter;
+  renderOperators();
+}));
 document.addEventListener("visibilitychange", () => { if (document.hidden && audio?.awake) audio.context?.suspend(); else if (audio?.awake) audio.context?.resume(); });
 
 fetch("archive/sound-archive.json?v=8", { cache: "no-store" })
@@ -409,8 +443,7 @@ fetch("archive/sound-archive.json?v=8", { cache: "no-store" })
     state.catalog = catalog;
     state.contract = contract;
     state.layout = null;
-    renderContract();
-    renderArchive();
+    renderOperators();
     renderAssembly();
     requestAnimationFrame(draw);
   })
