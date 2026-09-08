@@ -3,7 +3,7 @@
   "archive": "The Record",
   "canonical_url": "https://record.zeropoet.xyz/",
   "principle": "Sources remain sovereign. The Record indexes their relations without copying authority or media.",
-  "updated_at": "2026-09-08T18:29:39.647Z",
+  "updated_at": "2026-09-08T22:29:19.463668Z",
   "sources": [
     {
       "source_id": "foldforge",
@@ -22,7 +22,7 @@
     },
     {
       "source_id": "ovel",
-      "authority": "ØVEL",
+      "authority": "\u00d8VEL",
       "canonical_url": "https://ovel.zeropoet.xyz/"
     }
   ],
@@ -100,7 +100,7 @@
     {
       "id": "ovel-spectral-gravity-field",
       "title": "Spectral Gravity Field",
-      "branch": "ØVEL",
+      "branch": "\u00d8VEL",
       "kind": "procedural spatial instrument",
       "availability": "public instrument",
       "source": {
@@ -555,7 +555,7 @@
     },
     {
       "id": "root-logos-library-composition",
-      "title": "Root Logos — Library Composition",
+      "title": "Root Logos \u2014 Library Composition",
       "branch": "Root Logos / Library",
       "kind": "library composition",
       "collection": {
@@ -679,7 +679,7 @@
             "amplitude": 0.0196,
             "beats": 1,
             "rest": false,
-            "provenance": "Great Founder Theory + The Notebooks of Leonardo da Vinci — Complete / coherence"
+            "provenance": "Great Founder Theory + The Notebooks of Leonardo da Vinci \u2014 Complete / coherence"
           },
           {
             "frequency": 123.842,
@@ -958,7 +958,7 @@
             "amplitude": 0.051,
             "beats": 1,
             "rest": false,
-            "provenance": "A Mathematical Theory of Communication + The Notebooks of Leonardo da Vinci — Complete / continuity"
+            "provenance": "A Mathematical Theory of Communication + The Notebooks of Leonardo da Vinci \u2014 Complete / continuity"
           },
           {
             "frequency": 293.333,
@@ -1426,7 +1426,7 @@
             "amplitude": 0.0353,
             "beats": 0.5,
             "rest": false,
-            "provenance": "Original Douay-Rheims Catholic Canon + The Notebooks of Leonardo da Vinci — Complete / counterpoint"
+            "provenance": "Original Douay-Rheims Catholic Canon + The Notebooks of Leonardo da Vinci \u2014 Complete / counterpoint"
           },
           {
             "frequency": 214.303,
@@ -1894,7 +1894,7 @@
             "amplitude": 0.054,
             "beats": 2,
             "rest": false,
-            "provenance": "The Notebooks of Leonardo da Vinci — Complete + Sonnets and Madrigals of Michelangelo Buonarroti / recurrence"
+            "provenance": "The Notebooks of Leonardo da Vinci \u2014 Complete + Sonnets and Madrigals of Michelangelo Buonarroti / recurrence"
           },
           {
             "frequency": 101.041,
@@ -4428,7 +4428,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:sūtra"
+            "provenance": "lexicon:s\u016btra"
           },
           {
             "frequency": 733.33348,
@@ -4770,7 +4770,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:sūtra"
+            "provenance": "lexicon:s\u016btra"
           },
           {
             "frequency": 495,
@@ -8923,7 +8923,7 @@
             "amplitude": 0.12,
             "beats": 1,
             "rest": false,
-            "provenance": "lexicon:i’ll"
+            "provenance": "lexicon:i\u2019ll"
           },
           {
             "frequency": 220,
@@ -9265,7 +9265,7 @@
             "amplitude": 0.12,
             "beats": 1,
             "rest": false,
-            "provenance": "lexicon:i’ll"
+            "provenance": "lexicon:i\u2019ll"
           },
           {
             "frequency": 330,
@@ -9758,7 +9758,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:i’ll"
+            "provenance": "lexicon:i\u2019ll"
           },
           {
             "frequency": 495,
@@ -9790,7 +9790,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": true,
-            "provenance": "lexicon:’tis"
+            "provenance": "lexicon:\u2019tis"
           },
           {
             "frequency": 206.25,
@@ -10100,7 +10100,7 @@
             "amplitude": 0.12,
             "beats": 2,
             "rest": false,
-            "provenance": "lexicon:i’ll"
+            "provenance": "lexicon:i\u2019ll"
           },
           {
             "frequency": 733.33348,
@@ -10132,7 +10132,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:’tis"
+            "provenance": "lexicon:\u2019tis"
           },
           {
             "frequency": 165,
@@ -12979,7 +12979,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:fluß"
+            "provenance": "lexicon:flu\u00df"
           },
           {
             "frequency": 880,
@@ -13321,7 +13321,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:fluß"
+            "provenance": "lexicon:flu\u00df"
           },
           {
             "frequency": 586.66652,
@@ -13781,7 +13781,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:one’s"
+            "provenance": "lexicon:one\u2019s"
           },
           {
             "frequency": 440,
@@ -14123,7 +14123,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:one’s"
+            "provenance": "lexicon:one\u2019s"
           },
           {
             "frequency": 206.25,
@@ -15805,7 +15805,7 @@
             "amplitude": 0.12,
             "beats": 1,
             "rest": true,
-            "provenance": "lexicon:popper’s"
+            "provenance": "lexicon:popper\u2019s"
           },
           {
             "frequency": 366.66674,
@@ -16147,7 +16147,7 @@
             "amplitude": 0.12,
             "beats": 1,
             "rest": false,
-            "provenance": "lexicon:popper’s"
+            "provenance": "lexicon:popper\u2019s"
           },
           {
             "frequency": 247.5,
@@ -25288,7 +25288,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:ch’i"
+            "provenance": "lexicon:ch\u2019i"
           },
           {
             "frequency": 366.6667,
@@ -25305,7 +25305,7 @@
             "amplitude": 0.12,
             "beats": 1,
             "rest": false,
-            "provenance": "lexicon:enemy’s"
+            "provenance": "lexicon:enemy\u2019s"
           },
           {
             "frequency": 220,
@@ -25451,7 +25451,7 @@
             "amplitude": 0.12,
             "beats": 2,
             "rest": false,
-            "provenance": "lexicon:ts’ao"
+            "provenance": "lexicon:ts\u2019ao"
           },
           {
             "frequency": 733.33348,
@@ -25508,7 +25508,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:ch’en"
+            "provenance": "lexicon:ch\u2019en"
           },
           {
             "frequency": 660,
@@ -25630,7 +25630,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:ch’i"
+            "provenance": "lexicon:ch\u2019i"
           },
           {
             "frequency": 366.6667,
@@ -25647,7 +25647,7 @@
             "amplitude": 0.12,
             "beats": 1,
             "rest": false,
-            "provenance": "lexicon:enemy’s"
+            "provenance": "lexicon:enemy\u2019s"
           },
           {
             "frequency": 330,
@@ -25793,7 +25793,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:ts’ao"
+            "provenance": "lexicon:ts\u2019ao"
           },
           {
             "frequency": 495,
@@ -25850,7 +25850,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:ch’en"
+            "provenance": "lexicon:ch\u2019en"
           },
           {
             "frequency": 440,
@@ -36987,7 +36987,7 @@
     },
     {
       "id": "root-logos-work-the-notebooks-of-leonardo-da-vinci-complete-359e73f1",
-      "title": "The Notebooks of Leonardo da Vinci — Complete",
+      "title": "The Notebooks of Leonardo da Vinci \u2014 Complete",
       "branch": "Root Logos / Renaissance Inquiry",
       "kind": "notebooks of art, science, engineering, and natural philosophy voice",
       "collection": {

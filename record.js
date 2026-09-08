@@ -14,9 +14,16 @@ const layerCount = document.querySelector("#layer-count");
 const fieldLabel = document.querySelector("#field-label");
 const kernelLabel = document.querySelector("#kernel-label");
 const timecode = document.querySelector("#timecode");
+const contractImage = document.querySelector("#contract-image");
+const contractToken = document.querySelector("#contract-token");
+const contractState = document.querySelector("#contract-state");
+const contractTitle = document.querySelector("#contract-work-title");
+const contractDescription = document.querySelector("#contract-description");
+const contractAdd = document.querySelector("#contract-add");
+const contractGrid = document.querySelector("#contract-grid");
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const state = { catalog: null, nodes: [], edges: [], layout: null, selected: new Set(), hover: -1, pointer: { x: 0, y: 0 }, started: performance.now() };
+const state = { catalog: null, contract: null, contractIndex: 0, nodes: [], edges: [], layout: null, selected: new Set(), hover: -1, pointer: { x: 0, y: 0 }, started: performance.now() };
 let audio;
 const isPlayable = (entry) => Boolean(entry.sound && (
   entry.sound.rootHz || entry.sound.frequenciesHz?.length || entry.sound.events?.length
@@ -275,12 +282,47 @@ function draw(now) {
   requestAnimationFrame(draw);
 }
 
+function renderContract() {
+  if (!state.contract) return;
+  const works = state.contract.works || [];
+  const work = works[state.contractIndex] || works[0];
+  document.querySelector("#contract-count").textContent = String(state.contract.counts.works).padStart(2, "0");
+  document.querySelector("#paired-count").textContent = String(state.contract.counts.paired).padStart(2, "0");
+  document.querySelector("#contract-link").href = state.contract.contract.url;
+  if (!work) return;
+  const sound = work.sound_id ? state.catalog.entries.find((entry) => entry.id === work.sound_id) : null;
+  const held = sound && state.selected.has(sound.id);
+  contractImage.src = work.image;
+  contractImage.alt = work.title + " contract image";
+  contractToken.textContent = "FLDFRG / " + String(work.token_id).padStart(3, "0");
+  contractState.textContent = work.paired ? "Contract image / matched library voice" : "Contract image / voice not yet present";
+  contractTitle.textContent = work.title;
+  contractDescription.textContent = work.paired
+    ? "The image is held by token identity. Its sound remains the current Root Logos library voice for the same work."
+    : "The contract work remains visible and witnessed. No unrelated sound has been assigned to it.";
+  contractAdd.disabled = !sound;
+  contractAdd.textContent = !sound ? "Awaiting sound" : held ? "Remove sound" : "Add sound";
+  contractAdd.setAttribute("aria-pressed", held ? "true" : "false");
+  contractAdd.dataset.soundId = sound?.id || "";
+  contractGrid.innerHTML = works.map((item, index) =>
+    '<li><button type="button" data-contract-index="' + index + '" aria-pressed="' + (index === state.contractIndex) + '">' +
+      '<img src="' + item.image + '" alt="">' +
+      '<span><strong>' + item.title + '</strong><small>FLDFRG ' + String(item.token_id).padStart(3, "0") + ' / ' + (item.paired ? "Voice paired" : "Awaiting voice") + '</small></span>' +
+    '</button></li>'
+  ).join("");
+  contractGrid.querySelectorAll("button").forEach((button) => button.addEventListener("click", () => {
+    state.contractIndex = Number(button.dataset.contractIndex);
+    renderContract();
+    contractImage.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "center" });
+  }));
+}
+
 function toggle(id) {
   const entry = state.catalog.entries.find((item) => item.id === id);
   if (!entry || !isPlayable(entry)) return;
   if (state.selected.has(id)) state.selected.delete(id);
   else state.selected.add(id);
-  renderArchive(); renderAssembly(); audio?.reconcile();
+  renderArchive(); renderAssembly(); renderContract(); audio?.reconcile();
 }
 
 function renderAssembly() {
@@ -348,12 +390,28 @@ canvas.addEventListener("keydown", (event) => {
 listenButton.addEventListener("click", async () => {
   audio ||= new RecordAudio();
   if (audio.awake) { audio.stop(); listenButton.textContent = "Listen"; listenButton.setAttribute("aria-pressed", "false"); }
-  else { if (!state.selected.size) state.catalog.entries.filter(isPlayable).slice(0, 2).forEach(({ id }) => state.selected.add(id)); await audio.start(); renderArchive(); renderAssembly(); listenButton.textContent = "Silence"; listenButton.setAttribute("aria-pressed", "true"); }
+  else { if (!state.selected.size) state.catalog.entries.filter(isPlayable).slice(0, 2).forEach(({ id }) => state.selected.add(id)); await audio.start(); renderArchive(); renderAssembly(); renderContract(); listenButton.textContent = "Silence"; listenButton.setAttribute("aria-pressed", "true"); }
 });
-clearButton.addEventListener("click", () => { state.selected.clear(); renderArchive(); renderAssembly(); audio?.reconcile(); });
+clearButton.addEventListener("click", () => { state.selected.clear(); renderArchive(); renderAssembly(); renderContract(); audio?.reconcile(); });
+contractAdd.addEventListener("click", () => {
+  if (contractAdd.dataset.soundId) toggle(contractAdd.dataset.soundId);
+});
 document.addEventListener("visibilitychange", () => { if (document.hidden && audio?.awake) audio.context?.suspend(); else if (audio?.awake) audio.context?.resume(); });
 
-fetch("archive/sound-archive.json?v=7", { cache: "no-store" })
+fetch("archive/sound-archive.json?v=8", { cache: "no-store" })
   .then((response) => { if (!response.ok) throw new Error(`Archive ${response.status}`); return response.json(); })
-  .then((catalog) => { state.catalog = catalog; state.layout = null; renderArchive(); renderAssembly(); requestAnimationFrame(draw); })
+  .then(async (catalog) => {
+    const response = await fetch("archive/fldfrg-works.json?v=1", { cache: "no-store" });
+    if (!response.ok) throw new Error("FLDFRG " + response.status);
+    return [catalog, await response.json()];
+  })
+  .then(([catalog, contract]) => {
+    state.catalog = catalog;
+    state.contract = contract;
+    state.layout = null;
+    renderContract();
+    renderArchive();
+    renderAssembly();
+    requestAnimationFrame(draw);
+  })
   .catch((error) => { fieldLabel.textContent = "The archive could not be resolved"; console.error(error); });

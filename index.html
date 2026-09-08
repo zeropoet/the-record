@@ -11,7 +11,7 @@
   <meta property="og:type" content="website">
   <link rel="canonical" href="https://record.zeropoet.xyz/">
   <link rel="icon" href="assets/sovereign-standard-record-mark.svg?v=2" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=5">
+  <link rel="stylesheet" href="styles.css?v=6">
   <title>The Record — Zeropoet</title>
 </head>
 <body>
@@ -24,6 +24,33 @@
   </header>
 
   <main>
+    <section class="contract-library" aria-labelledby="contract-title">
+      <header class="contract-heading">
+        <div>
+          <p class="eyebrow">01 / Ethereum Contract / Audible Library</p>
+          <h2 id="contract-title">The work has<br>a visible body.</h2>
+        </div>
+        <div class="contract-proof">
+          <p><span id="contract-count">00</span> contract works</p>
+          <p><span id="paired-count">00</span> paired voices</p>
+          <a id="contract-link" href="https://etherscan.io/address/0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc" target="_blank" rel="noopener">FLDFRG / Ethereum ↗</a>
+        </div>
+      </header>
+      <div class="contract-focus">
+        <figure class="contract-image-wrap">
+          <img id="contract-image" alt="">
+          <figcaption id="contract-token">FLDFRG / awaiting contract</figcaption>
+        </figure>
+        <div class="contract-detail" aria-live="polite">
+          <p class="eyebrow" id="contract-state">Contract image / library voice</p>
+          <h3 id="contract-work-title">Resolving the archive</h3>
+          <p id="contract-description">Each Ethereum work is paired with the sound generated from the same Root Logos library work.</p>
+          <button id="contract-add" type="button" disabled>Awaiting sound</button>
+        </div>
+      </div>
+      <ol id="contract-grid" class="contract-grid" aria-label="FLDFRG contract works"></ol>
+    </section>
+
     <section class="instrument" aria-label="The Record sound archive and compositional field">
       <div class="field-wrap">
         <canvas id="field" tabindex="0" aria-label="Navigable map of archived sound structures"></canvas>
@@ -35,14 +62,14 @@
       </div>
 
       <div class="record-statement">
-        <p class="eyebrow">01 / Sound Archive / Compositional Field</p>
+          <p class="eyebrow">02 / Sound Archive / Compositional Field</p>
         <p>Every sound remains<br><em>where it was made.</em></p>
       </div>
 
       <div class="assembly" aria-labelledby="assembly-title">
         <header>
           <div>
-            <p class="eyebrow">02 / Open Assembly / 001</p>
+            <p class="eyebrow">03 / Open Assembly / 001</p>
             <h2 id="assembly-title">A provisional way to compose.</h2>
           </div>
           <button id="clear" type="button">Clear</button>
@@ -63,7 +90,7 @@
     <section class="archive" aria-labelledby="archive-title">
       <header class="archive-header">
         <div>
-          <p class="eyebrow">03 / Canonical Index</p>
+          <p class="eyebrow">04 / Canonical Index</p>
           <h2 id="archive-title">The archive is distributed.</h2>
         </div>
         <p><span id="record-count">0</span> sounds<br><span id="collection-count">0</span> collections</p>
@@ -78,6 +105,6 @@
   </footer>
 
   <noscript>The Record requires JavaScript to sound and draw its archive. Its machine-readable index remains available.</noscript>
-  <script type="module" src="record.js?v=9"></script>
+  <script type="module" src="record.js?v=10"></script>
 </body>
 </html>

@@ -72,6 +72,28 @@ class SyncSourcesTests(unittest.TestCase):
         self.assertEqual(archive["collections"], [collection])
         self.assertEqual(archive["entries"][0]["collection_id"], "questions")
 
+    def test_pairs_contract_work_only_to_the_same_library_voice(self) -> None:
+        archive = {
+            "entries": [{
+                "id": "root-logos-work-the-odyssey",
+                "title": "The Odyssey",
+                "collection_id": "root-logos-works",
+                "source": {"path": "works/the-odyssey-deadbeef/edition.json"},
+            }]
+        }
+        contract = {
+            "address": MODULE.FLDFRG_ADDRESS,
+            "name": "FOLD FORGE",
+            "symbol": "FLDFRG",
+        }
+        record = MODULE.build_fldfrg_record(archive, contract, [
+            ("3", {"name": "02-the-odyssey"}, b"image"),
+            ("99", {"name": "a-work-without-a-voice"}, b"other"),
+        ])
+        self.assertEqual(record["counts"], {"works": 2, "paired": 1, "awaiting_sound": 1})
+        self.assertEqual(record["works"][0]["sound_id"], "root-logos-work-the-odyssey")
+        self.assertIsNone(record["works"][1]["sound_id"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -10,6 +10,13 @@ preserved masters, deterministic instruments, procedural voices, and
 compositional grammars without moving their canonical files or absorbing the
 authority of the systems that made them.
 
+The \`FLDFRG\` Ethereum contract is the visual index of the Root Logos work
+library. The Record retains a local, SHA-256 witnessed copy of every contract
+image and pairs it only when the same canonical work has a current library
+voice. Contract/token identity governs the image; the source sound manifest
+governs playback. An unmatched token remains visible as \`awaiting voice\` rather
+than borrowing an unrelated sound.
+
 The public [`foldkernel-integration.json`](foldkernel-integration.json) joins
 The Record to the same exact FoldKernel `1.0.5` / protocol `1.0.0` contract
 already held by FoldForge, FoldPortrait, Root Logos, and Sovereign Standard.
@@ -40,6 +47,9 @@ hashes.
   The Record interprets that contract instead of substituting a house voice.
 - The initial Assembly is provisional. It relates deterministic public sound
   structures in one browser-local field and changes no source artifact.
+- \`archive/fldfrg-works.json\` is regenerated from FoldForge's contract-keyed
+  local Ethereum archive. Each run refreshes the 55 token images and rematches
+  them against the latest Root Logos work ids.
 
 ## Propagation
 
@@ -63,6 +73,8 @@ data rather than substituting a generic voice.
 ```sh
 node scripts/validate.mjs
 node scripts/record-kernel.test.mjs
+node scripts/fldfrg-contract.test.mjs
+node scripts/sync-fldfrg-contract.mjs /path/to/FoldForge
 python3 scripts/sync_sources.py \
   --local foldforge=/path/to/FoldForge/public/record-sound-archive.json \
   --local root-logos=/path/to/root-logos/content/record-sound-archive.json \
