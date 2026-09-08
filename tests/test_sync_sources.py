@@ -90,9 +90,28 @@ class SyncSourcesTests(unittest.TestCase):
             ("3", {"name": "02-the-odyssey"}, b"image"),
             ("99", {"name": "a-work-without-a-voice"}, b"other"),
         ])
-        self.assertEqual(record["counts"], {"works": 2, "paired": 1, "awaiting_sound": 1})
+        self.assertEqual(record["counts"], {
+            "tokens": 2,
+            "works": 2,
+            "paired": 1,
+            "awaiting_sound": 1,
+            "unresolved_tokens": 0,
+        })
         self.assertEqual(record["works"][0]["sound_id"], "root-logos-work-the-odyssey")
         self.assertIsNone(record["works"][1]["sound_id"])
+
+    def test_numeric_token_is_not_presented_as_a_work(self) -> None:
+        contract = {"address": MODULE.FLDFRG_ADDRESS, "name": "FOLD FORGE", "symbol": "FLDFRG"}
+        record = MODULE.build_fldfrg_record({"entries": []}, contract, [("52", {"name": "52"}, b"image")])
+        self.assertEqual(record["counts"], {
+            "tokens": 1,
+            "works": 0,
+            "paired": 0,
+            "awaiting_sound": 0,
+            "unresolved_tokens": 1,
+        })
+        self.assertEqual(record["unresolved_token_ids"], ["52"])
+        self.assertEqual(record["works"], [])
 
 
 if __name__ == "__main__":

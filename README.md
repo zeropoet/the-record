@@ -11,11 +11,11 @@ compositional grammars without moving their canonical files or absorbing the
 authority of the systems that made them.
 
 The \`FLDFRG\` Ethereum contract is the visual index of the Root Logos work
-library. The Record retains a local, SHA-256 witnessed copy of every contract
-image and pairs it only when the same canonical work has a current library
+library. The Record retains a local, SHA-256 witnessed copy of every minted
+token image and presents every named work beside its exact current library
 voice. Contract/token identity governs the image; the source sound manifest
-governs playback. An unmatched token remains visible as \`awaiting voice\` rather
-than borrowing an unrelated sound.
+governs playback. Numeric placeholder metadata remains a retained minted record,
+not a named work and not a false missing-sound entry.
 
 The public [`foldkernel-integration.json`](foldkernel-integration.json) joins
 The Record to the same exact FoldKernel `1.0.5` / protocol `1.0.0` contract
@@ -33,12 +33,6 @@ switching them off preserves every sound, selection, and relation. System
 voices use signal marks instead of invented covers. Resonant Holdings is
 exposed separately as the heartbeat/baseline atmosphere so it can be held
 beneath an assembly without being mistaken for an ordinary work.
-
-An FLDFRG work may leave the active Root Logos Library without losing its
-minted sound lineage. The Record retains the deterministic score from that
-work's final admitted edition and marks it as contract-archived rather than
-active. Future synchronization merges those archived voices after the current
-source manifests, then rematches the complete contract.
 
 ## Boundary
 

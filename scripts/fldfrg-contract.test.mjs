@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
@@ -10,7 +10,10 @@ const soundIds = new Set(sounds.entries.map((entry) => entry.id));
 assert.equal(contract.schema, "the-record-fldfrg-contract/v1");
 assert.equal(contract.contract.symbol, "FLDFRG");
 assert.equal(contract.contract.address, "0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc");
-assert.equal(contract.works.length, 55);
+assert.equal(contract.works.length, 51);
+assert.equal(contract.counts.tokens, 55);
+assert.equal(contract.counts.unresolved_tokens, 4);
+assert.equal(readdirSync(resolve(root, "archive/fldfrg")).filter((name) => !name.startsWith(".")).length, 55);
 assert.equal(new Set(contract.works.map((work) => work.token_id)).size, contract.works.length);
 assert.equal(contract.counts.paired + contract.counts.awaiting_sound, contract.counts.works);
 
@@ -20,4 +23,4 @@ for (const work of contract.works) {
   else assert.equal(work.sound_id, null);
 }
 
-console.log("FLDFRG contract verified: " + contract.counts.works + " images / " + contract.counts.paired + " exact sound pairings.");
+console.log("FLDFRG contract verified: " + contract.counts.tokens + " local token images / " + contract.counts.paired + " of " + contract.counts.works + " named works paired.");

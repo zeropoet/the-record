@@ -19,7 +19,6 @@ POLICY = ROOT / "propagation" / "sources.json"
 TARGET = ROOT / "archive" / "sound-archive.json"
 FLDFRG_TARGET = ROOT / "archive" / "fldfrg-works.json"
 FLDFRG_MEDIA = ROOT / "archive" / "fldfrg"
-FLDFRG_ARCHIVED_SOUNDS = ROOT / "archive" / "fldfrg-archived-sounds.json"
 FLDFRG_ADDRESS = "0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc"
 FOLDFORGE_ORIGIN = "https://foldforge.zeropoet.xyz"
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
@@ -73,12 +72,17 @@ def build_fldfrg_record(archive: dict, contract: dict, tokens: list[tuple[str, d
         if match:
             library[work_key(re.sub(r"-[a-f0-9]{8}$", "", match.group(1)))] = entry
     works = []
+    unresolved_tokens = []
     for token_id, metadata, image in tokens:
+        token_name = str(metadata.get("name", "")).strip()
+        if re.fullmatch(r"(?:token\s*#?)?\d+", token_name, re.IGNORECASE):
+            unresolved_tokens.append(token_id)
+            continue
         sound = library.get(work_key(metadata.get("name", "")))
         image_name = f"{int(token_id):03d}.png"
         works.append({
             "token_id": token_id,
-            "token_name": metadata.get("name", ""),
+            "token_name": token_name,
             "title": sound.get("title") if sound else display_token_name(metadata.get("name", "")),
             "image": f"archive/fldfrg/{image_name}",
             "image_sha256": hashlib.sha256(image).hexdigest(),
@@ -99,7 +103,14 @@ def build_fldfrg_record(archive: dict, contract: dict, tokens: list[tuple[str, d
             "source_path": f"public/ethereum-archive/contracts/{FLDFRG_ADDRESS}",
             "url": f"https://etherscan.io/address/{contract['address']}",
         },
-        "counts": {"works": len(works), "paired": paired, "awaiting_sound": len(works) - paired},
+        "counts": {
+            "tokens": len(tokens),
+            "works": len(works),
+            "paired": paired,
+            "awaiting_sound": len(works) - paired,
+            "unresolved_tokens": len(unresolved_tokens),
+        },
+        "unresolved_token_ids": unresolved_tokens,
         "works": works,
     }
 
@@ -111,7 +122,7 @@ def validate_manifest(source: dict, manifest: dict) -> None:
         raise ValueError(f"{source['id']} manifest is invalid")
 
 
-def build_archive(manifests: list[dict], archived_entries: list[dict] | None = None) -> dict:
+def build_archive(manifests: list[dict]) -> dict:
     fallback_collection = {
         "id": "studio-instruments",
         "title": "Studio Instruments",
@@ -127,12 +138,6 @@ def build_archive(manifests: list[dict], archived_entries: list[dict] | None = N
             entry["collection_id"] = collection["id"]
             entry["collection_order"] = entry.get("collection_order", index + 1)
             entries.append(entry)
-    for source_entry in archived_entries or []:
-        entry = dict(source_entry)
-        collection = entry.get("collection") or fallback_collection
-        entry["collection"] = collection
-        entry["collection_id"] = collection["id"]
-        entries.append(entry)
     seen: set[str] = set()
     for entry in entries:
         identifier = entry.get("id")
@@ -245,10 +250,7 @@ def main() -> int:
         manifest = read_json(Path(local[source["id"]])) if source["id"] in local else load_remote(source["manifest_url"])
         validate_manifest(source, manifest)
         manifests.append(manifest)
-    archived_contract_voices = read_json(FLDFRG_ARCHIVED_SOUNDS)
-    if archived_contract_voices.get("schema") != "the-record-fldfrg-archived-sounds/v1":
-        raise ValueError("invalid FLDFRG archived sound manifest")
-    archive = build_archive(manifests, archived_contract_voices["entries"])
+    archive = build_archive(manifests)
     write_atomic(TARGET, archive)
     contract_root = arguments.fldfrg_contract_root
     if contract_root is None and "foldforge" in local:
