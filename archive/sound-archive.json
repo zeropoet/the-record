@@ -3,7 +3,7 @@
   "archive": "The Record",
   "canonical_url": "https://record.zeropoet.xyz/",
   "principle": "Sources remain sovereign. The Record indexes their relations without copying authority or media.",
-  "updated_at": "2026-09-05T19:47:17.121Z",
+  "updated_at": "2026-09-08T18:29:39.647Z",
   "sources": [
     {
       "source_id": "foldforge",
@@ -243,7 +243,25 @@
             0.045,
             0.022
           ],
-          "stereo": "center"
+          "stereo": "center",
+          "substrate": {
+            "source": "Ovel Spectral Gravity Field",
+            "sourceUrl": "https://ovel.zeropoet.xyz/",
+            "seed": 3165167791,
+            "waves": [
+              "sine",
+              "triangle",
+              "sawtooth"
+            ],
+            "intervals": [
+              0,
+              7,
+              14
+            ],
+            "delaySeconds": 0.24,
+            "feedback": 0.32,
+            "stereo": "center"
+          }
         }
       },
       "collection": {
@@ -360,6 +378,80 @@
       },
       "collection_id": "studio-instruments",
       "collection_order": 2
+    },
+    {
+      "id": "foldforge-dual-source-field",
+      "title": "Dual Source Field",
+      "branch": "FoldForge",
+      "kind": "shared Ethereum holdings state",
+      "availability": "public instrument",
+      "source": {
+        "repository": "zeropoet/FoldForge",
+        "path": "app/composer-chamber",
+        "url": "https://foldforge.zeropoet.xyz/composer-chamber"
+      },
+      "witness": "sha256:0fd0e788ec055ed08651a6fa90bf64b8611a2255135c33892e49516446238f72",
+      "sources": [
+        {
+          "owner": "zeropoet.eth",
+          "workCount": 260,
+          "observedWorkCount": 98,
+          "contractCount": 22,
+          "witness": "sha256:96043412afa04722a0e9d458f342f0c8bf22eef257b7767d85f1b01b638441e3"
+        },
+        {
+          "owner": "rootlogos.eth",
+          "workCount": 62,
+          "observedWorkCount": 62,
+          "contractCount": 5,
+          "witness": "sha256:f3a9beab77bbf0ab3ae98d8c4eb6b107d1ae850dc7399eea4e0868dbb51f5b5f"
+        }
+      ],
+      "sound": {
+        "frequenciesHz": [
+          123.471,
+          207.652,
+          160.122,
+          380.289
+        ],
+        "waves": [
+          "sine",
+          "triangle",
+          "sawtooth",
+          "triangle"
+        ],
+        "cutoffHz": 3068,
+        "renderer": {
+          "engine": "continuous-voice/v1",
+          "masterGain": 0.2,
+          "fadeInSeconds": 1.8,
+          "fieldFilter": {
+            "type": "bandpass",
+            "frequency": 3068,
+            "Q": 2.4
+          },
+          "partialGains": [
+            0.42,
+            0.42,
+            0.68,
+            0.24
+          ],
+          "gainLfo": {
+            "base": 0.72,
+            "depth": 0.2,
+            "angularRate": 0.42
+          },
+          "stereo": "center"
+        }
+      },
+      "collection": {
+        "id": "studio-instruments",
+        "title": "Studio Instruments",
+        "type": "source-instruments",
+        "order": 10
+      },
+      "collection_id": "studio-instruments",
+      "collection_order": 3
     },
     {
       "id": "root-logos-expression-rl-reading-0001",
