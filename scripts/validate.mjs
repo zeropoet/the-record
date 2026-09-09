@@ -24,6 +24,11 @@ for (const entry of catalog.entries) {
   if (entry.collection?.type === "question-expressions" && !entry.question?.text) throw new Error(`${entry.id} has no originating question`);
 }
 for (const path of ["../index.html", "../styles.css", "../record.js", "../assets/sovereign-standard-record-mark.svg"]) await access(new URL(path, import.meta.url));
+const mark = await readFile(new URL("../assets/sovereign-standard-record-mark.svg", import.meta.url), "utf8");
+const styles = await readFile(new URL("../styles.css", import.meta.url), "utf8");
+if (!mark.includes('<rect width="1024" height="1024" fill="#ffffff"/>')) throw new Error("The Record mark must preserve its white field");
+if (!mark.includes('<path d="M133.12 512H890.88"/>')) throw new Error("The Record mark axis must remain horizontal");
+if (/\.identity img\s*\{[^}]*transform:\s*rotate/s.test(styles)) throw new Error("The Record identity must inherit the canonical mark orientation");
 const declaration = JSON.parse(await readFile(new URL("../foldkernel-integration.json", import.meta.url), "utf8"));
 if (declaration.contractVersion !== FOLDKERNEL.contractVersion) throw new Error("FoldKernel contract drift");
 if (declaration.foldKernel.protocolVersion !== FOLDKERNEL.protocolVersion || declaration.foldKernel.packageRequirement.version !== FOLDKERNEL.packageVersion) throw new Error("FoldKernel version drift");

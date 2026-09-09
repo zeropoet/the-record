@@ -19,7 +19,7 @@ button:focus-visible,a:focus-visible{outline:1px solid var(--gold);outline-offse
   font: .66rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase
 }
 .site-header p{margin:0;color:var(--bone)} .site-header p span{margin-left:.8rem;color:var(--ghost);font-size:.54rem}
-.identity{display:block;width:2.15rem;height:2.15rem}.identity img{width:100%;height:100%;filter:invert(1);transform:rotate(-90deg)}
+.identity{display:block;width:2.15rem;height:2.15rem}.identity img{width:100%;height:100%;filter:none}
 .site-header button,.assembly button,.baseline button,.operator-controls button{
   justify-self:end;padding:.55rem 0;border:0;border-bottom:1px solid var(--gold);
   background:transparent;cursor:pointer;font: .64rem/1 var(--mono);letter-spacing:.13em;text-transform:uppercase
