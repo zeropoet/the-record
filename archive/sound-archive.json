@@ -3,7 +3,7 @@
   "archive": "The Record",
   "canonical_url": "https://record.zeropoet.xyz/",
   "principle": "Sources remain sovereign. The Record indexes their relations without copying authority or media.",
-  "updated_at": "2026-09-10T20:47:03.701Z",
+  "updated_at": "2026-09-10T21:10:33.302Z",
   "sources": [
     {
       "source_id": "foldforge",
@@ -145,7 +145,7 @@
         "dynamics": "radial motion introduces restrained differential detuning without adding rotational modulation",
         "renderer": {
           "engine": "continuous-voice/v1",
-          "masterGain": 0.2,
+          "masterGain": 0.22,
           "fadeInSeconds": 0.36,
           "bypassFieldFilter": true,
           "voiceFilters": [
