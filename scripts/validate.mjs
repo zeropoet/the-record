@@ -23,7 +23,7 @@ for (const entry of catalog.entries) {
   if (["event-score", "timed-score"].includes(entry.sound?.mode) && !entry.sound.events?.length) throw new Error(`${entry.id} has an empty score`);
   if (entry.collection?.type === "question-expressions" && !entry.question?.text) throw new Error(`${entry.id} has no originating question`);
 }
-for (const path of ["../index.html", "../styles.css", "../record.js", "../assets/sovereign-standard-record-mark.svg"]) await access(new URL(path, import.meta.url));
+for (const path of ["../index.html", "../styles.css", "../record.js", "../assets/sovereign-standard-record-mark.svg", "../assets/record-nav-mark.svg"]) await access(new URL(path, import.meta.url));
 const mark = await readFile(new URL("../assets/sovereign-standard-record-mark.svg", import.meta.url), "utf8");
 const styles = await readFile(new URL("../styles.css", import.meta.url), "utf8");
 if (/<rect\b[^>]*(?:width="1024"|height="1024")/.test(mark)) throw new Error("The Record mark must preserve its transparent field");
