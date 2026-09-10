@@ -3,7 +3,7 @@
   "archive": "The Record",
   "canonical_url": "https://record.zeropoet.xyz/",
   "principle": "Sources remain sovereign. The Record indexes their relations without copying authority or media.",
-  "updated_at": "2026-09-08T23:45:26.246465Z",
+  "updated_at": "2026-09-10T20:47:03.701Z",
   "sources": [
     {
       "source_id": "foldforge",
@@ -22,7 +22,7 @@
     },
     {
       "source_id": "ovel",
-      "authority": "\u00d8VEL",
+      "authority": "ØVEL",
       "canonical_url": "https://ovel.zeropoet.xyz/"
     }
   ],
@@ -100,7 +100,7 @@
     {
       "id": "ovel-spectral-gravity-field",
       "title": "Spectral Gravity Field",
-      "branch": "\u00d8VEL",
+      "branch": "ØVEL",
       "kind": "procedural spatial instrument",
       "availability": "public instrument",
       "source": {
@@ -381,38 +381,38 @@
     },
     {
       "id": "foldforge-dual-source-field",
-      "title": "Dual Source Field",
+      "title": "zeropoet.eth × rootlogos.eth Composite",
       "branch": "FoldForge",
-      "kind": "shared Ethereum holdings state",
+      "kind": "canonical composite of two Ethereum holdings states",
       "availability": "public instrument",
       "source": {
         "repository": "zeropoet/FoldForge",
         "path": "app/composer-chamber",
         "url": "https://foldforge.zeropoet.xyz/composer-chamber"
       },
-      "witness": "sha256:07ea5bc3571b615fc3b96773565215dc7750a7fef98874cb15131fbc2e47668b",
+      "witness": "sha256:10f54488d9418808c0308147b674adb36474b9bc0b8d8bd64578a53709c91600",
       "sources": [
         {
           "owner": "zeropoet.eth",
-          "workCount": 260,
-          "observedWorkCount": 260,
+          "workCount": 258,
+          "observedWorkCount": 258,
           "contractCount": 22,
-          "witness": "sha256:96043412afa04722a0e9d458f342f0c8bf22eef257b7767d85f1b01b638441e3"
+          "witness": "sha256:0ce93e107d19ea3309b1ea124f7b0ad7e6855b7fd321456916547528da5eeec8"
         },
         {
           "owner": "rootlogos.eth",
-          "workCount": 62,
-          "observedWorkCount": 62,
-          "contractCount": 5,
-          "witness": "sha256:c972c41f60251d5ecd467023ddf0a99b57d0d4e815e654dceaaf021dd1348888"
+          "workCount": 65,
+          "observedWorkCount": 65,
+          "contractCount": 6,
+          "witness": "sha256:35fa1ed63f8bb362b3d29db72a67c3e8177f935ee927269f06f5e4d536b0a89e"
         }
       ],
       "sound": {
         "frequenciesHz": [
-          123.471,
-          164.814,
-          142.652,
-          285.305
+          82.407,
+          155.563,
+          113.223,
+          169.835
         ],
         "waves": [
           "sine",
@@ -420,26 +420,32 @@
           "sawtooth",
           "triangle"
         ],
-        "cutoffHz": 2927,
+        "cutoffHz": 3312,
         "renderer": {
           "engine": "continuous-voice/v1",
           "masterGain": 0.2,
           "fadeInSeconds": 1.8,
           "fieldFilter": {
             "type": "bandpass",
-            "frequency": 2927,
+            "frequency": 3312,
             "Q": 2.4
           },
           "partialGains": [
-            0.42,
-            0.42,
-            0.68,
-            0.24
+            0.5,
+            0.5,
+            0.56,
+            0.2
           ],
           "gainLfo": {
-            "base": 0.72,
-            "depth": 0.2,
-            "angularRate": 0.42
+            "base": 0.86,
+            "depth": 0.08,
+            "angularRate": 0.21
+          },
+          "composite": {
+            "mode": "simultaneous-sum",
+            "sources": 2,
+            "phase": "shared",
+            "cadence": "shared"
           },
           "stereo": "center"
         }
@@ -554,8 +560,415 @@
       "collection_id": "root-logos-expressions"
     },
     {
+      "id": "root-logos-expression-rl-reading-0002",
+      "title": "RL-READING-0002 / Bounded execution",
+      "branch": "Root Logos / Expressions",
+      "kind": "question-bearing tonal expression",
+      "collection": {
+        "id": "root-logos-expressions",
+        "title": "Root Logos / Expressions",
+        "type": "question-expressions",
+        "order": 20
+      },
+      "collection_order": 2,
+      "availability": "public procedural score",
+      "question": {
+        "text": "What can be entrusted to execution without mistaking the executable for the whole of reality?",
+        "origin": "RL work 52 / threshold sequence"
+      },
+      "expression": {
+        "status": "active",
+        "textual_utterance": [
+          "A procedure begins by drawing a boundary.",
+          "The executable is the part of relation made precise enough to entrust with consequence.",
+          "The boundary lets the system act without pretending to be complete."
+        ],
+        "grammar": "Bounded execution",
+        "source_witness": "https://turingarchive.kings.cam.ac.uk/computable-numbers"
+      },
+      "source": {
+        "repository": "zeropoet/root-logos",
+        "path": "reading/state.json",
+        "url": "https://rootlogos.com/root-logos-1.6.html#language"
+      },
+      "sound": {
+        "mode": "timed-score",
+        "schema": "root-logos-reading-tone/v1",
+        "signature": "RL-TONE-READING-0002",
+        "tempo": 60,
+        "rootHz": 52,
+        "duration_seconds": 8,
+        "renderer": {
+          "engine": "timed-event-score/v1",
+          "masterGain": 0.72,
+          "pitchMultiplier": 2,
+          "waveformCycle": [
+            "sine",
+            "triangle",
+            "sine"
+          ],
+          "filter": {
+            "type": "lowpass",
+            "startHz": 720,
+            "stepHz": 110
+          },
+          "attackMaxSeconds": 0.18,
+          "attackDurationRatio": 0.22,
+          "tailSeconds": 0.03,
+          "loop": true,
+          "loopGapSeconds": 0.4,
+          "stereo": "center"
+        },
+        "events": [
+          {
+            "at": 0,
+            "duration": 1.2,
+            "ratio": 1,
+            "amplitude": 0.12,
+            "source": "boundary"
+          },
+          {
+            "at": 1.6,
+            "duration": 0.8,
+            "ratio": 2,
+            "amplitude": 0.09,
+            "source": "instruction"
+          },
+          {
+            "at": 2.8,
+            "duration": 1.2,
+            "ratio": 1.5,
+            "amplitude": 0.11,
+            "source": "execution"
+          },
+          {
+            "at": 4.8,
+            "duration": 0.7,
+            "ratio": 2.5,
+            "amplitude": 0.07,
+            "source": "limit"
+          },
+          {
+            "at": 6.2,
+            "duration": 1.8,
+            "ratio": 1,
+            "amplitude": 0.1,
+            "source": "return"
+          }
+        ]
+      },
+      "collection_id": "root-logos-expressions"
+    },
+    {
+      "id": "root-logos-expression-rl-reading-0003",
+      "title": "RL-READING-0003 / Visible incompleteness",
+      "branch": "Root Logos / Expressions",
+      "kind": "question-bearing tonal expression",
+      "collection": {
+        "id": "root-logos-expressions",
+        "title": "Root Logos / Expressions",
+        "type": "question-expressions",
+        "order": 20
+      },
+      "collection_order": 3,
+      "availability": "public procedural score",
+      "question": {
+        "text": "How can a system remain coherent while preserving truths and questions it cannot establish from within itself?",
+        "origin": "RL work 53 / threshold sequence"
+      },
+      "expression": {
+        "status": "active",
+        "textual_utterance": [
+          "A coherent system can speak truly without containing every truth that concerns it.",
+          "Incompleteness is the space in which correction can arrive.",
+          "Truth remains more important than closure."
+        ],
+        "grammar": "Visible incompleteness",
+        "source_witness": "https://doi.org/10.1007/BF01700692"
+      },
+      "source": {
+        "repository": "zeropoet/root-logos",
+        "path": "reading/state.json",
+        "url": "https://rootlogos.com/root-logos-1.6.html#language"
+      },
+      "sound": {
+        "mode": "timed-score",
+        "schema": "root-logos-reading-tone/v1",
+        "signature": "RL-TONE-READING-0003",
+        "tempo": 53,
+        "rootHz": 55,
+        "duration_seconds": 8.4,
+        "renderer": {
+          "engine": "timed-event-score/v1",
+          "masterGain": 0.72,
+          "pitchMultiplier": 2,
+          "waveformCycle": [
+            "sine",
+            "triangle",
+            "sine"
+          ],
+          "filter": {
+            "type": "lowpass",
+            "startHz": 720,
+            "stepHz": 110
+          },
+          "attackMaxSeconds": 0.18,
+          "attackDurationRatio": 0.22,
+          "tailSeconds": 0.03,
+          "loop": true,
+          "loopGapSeconds": 0.4,
+          "stereo": "center"
+        },
+        "events": [
+          {
+            "at": 0,
+            "duration": 1.4,
+            "ratio": 1,
+            "amplitude": 0.11,
+            "source": "coherence"
+          },
+          {
+            "at": 1.8,
+            "duration": 1,
+            "ratio": 1.25,
+            "amplitude": 0.09,
+            "source": "claim"
+          },
+          {
+            "at": 3.3,
+            "duration": 0.9,
+            "ratio": 1.875,
+            "amplitude": 0.08,
+            "source": "undecidable"
+          },
+          {
+            "at": 5,
+            "duration": 1,
+            "ratio": 1.5,
+            "amplitude": 0.09,
+            "source": "correction"
+          },
+          {
+            "at": 6.7,
+            "duration": 1.7,
+            "ratio": 1,
+            "amplitude": 0.1,
+            "source": "opening"
+          }
+        ]
+      },
+      "collection_id": "root-logos-expressions"
+    },
+    {
+      "id": "root-logos-expression-rl-reading-0004",
+      "title": "RL-READING-0004 / Consequential becoming",
+      "branch": "Root Logos / Expressions",
+      "kind": "question-bearing tonal expression",
+      "collection": {
+        "id": "root-logos-expressions",
+        "title": "Root Logos / Expressions",
+        "type": "question-expressions",
+        "order": 20
+      },
+      "collection_order": 4,
+      "availability": "public procedural score",
+      "question": {
+        "text": "What kind of identity can persist through consequential change without being reduced to a static object?",
+        "origin": "RL work 54 / threshold sequence"
+      },
+      "expression": {
+        "status": "active",
+        "textual_utterance": [
+          "An object appears stable because many changes continue to agree.",
+          "Continuity is a pattern of change that can carry identity without freezing it.",
+          "What exists here is a continuity being made through use."
+        ],
+        "grammar": "Consequential becoming",
+        "source_witness": "https://openlibrary.org/books/OL14642173M/Process_and_reality"
+      },
+      "source": {
+        "repository": "zeropoet/root-logos",
+        "path": "reading/state.json",
+        "url": "https://rootlogos.com/root-logos-1.6.html#language"
+      },
+      "sound": {
+        "mode": "timed-score",
+        "schema": "root-logos-reading-tone/v1",
+        "signature": "RL-TONE-READING-0004",
+        "tempo": 54,
+        "rootHz": 54,
+        "duration_seconds": 9,
+        "renderer": {
+          "engine": "timed-event-score/v1",
+          "masterGain": 0.72,
+          "pitchMultiplier": 2,
+          "waveformCycle": [
+            "sine",
+            "triangle",
+            "sine"
+          ],
+          "filter": {
+            "type": "lowpass",
+            "startHz": 720,
+            "stepHz": 110
+          },
+          "attackMaxSeconds": 0.18,
+          "attackDurationRatio": 0.22,
+          "tailSeconds": 0.03,
+          "loop": true,
+          "loopGapSeconds": 0.4,
+          "stereo": "center"
+        },
+        "events": [
+          {
+            "at": 0,
+            "duration": 1.8,
+            "ratio": 1,
+            "amplitude": 0.1,
+            "source": "state"
+          },
+          {
+            "at": 1.2,
+            "duration": 1.7,
+            "ratio": 1.125,
+            "amplitude": 0.08,
+            "source": "relation"
+          },
+          {
+            "at": 2.7,
+            "duration": 1.9,
+            "ratio": 1.5,
+            "amplitude": 0.09,
+            "source": "event"
+          },
+          {
+            "at": 4.4,
+            "duration": 2,
+            "ratio": 1.333333,
+            "amplitude": 0.08,
+            "source": "change"
+          },
+          {
+            "at": 6.2,
+            "duration": 2.8,
+            "ratio": 1,
+            "amplitude": 0.1,
+            "source": "continuity"
+          }
+        ]
+      },
+      "collection_id": "root-logos-expressions"
+    },
+    {
+      "id": "root-logos-expression-rl-reading-0005",
+      "title": "RL-READING-0005 / Non-possessive inhabitation",
+      "branch": "Root Logos / Expressions",
+      "kind": "question-bearing tonal expression",
+      "collection": {
+        "id": "root-logos-expressions",
+        "title": "Root Logos / Expressions",
+        "type": "question-expressions",
+        "order": 20
+      },
+      "collection_order": 5,
+      "availability": "public procedural score",
+      "question": {
+        "text": "What makes a structure genuinely inhabitable by another center of agency?",
+        "origin": "RL work 55 / threshold sequence"
+      },
+      "expression": {
+        "status": "active",
+        "textual_utterance": [
+          "A structure becomes inhabitable when another presence can find an entrance and remain a center.",
+          "The reusable pattern is a relation that guides without demanding a copy.",
+          "The Weaving begins when the entrance can be used."
+        ],
+        "grammar": "Non-possessive inhabitation",
+        "source_witness": "https://christopher-alexander-ces-archive.org/book/a-pattern-language/"
+      },
+      "source": {
+        "repository": "zeropoet/root-logos",
+        "path": "reading/state.json",
+        "url": "https://rootlogos.com/root-logos-1.6.html#language"
+      },
+      "sound": {
+        "mode": "timed-score",
+        "schema": "root-logos-reading-tone/v1",
+        "signature": "RL-TONE-READING-0005",
+        "tempo": 55,
+        "rootHz": 55,
+        "duration_seconds": 10,
+        "renderer": {
+          "engine": "timed-event-score/v1",
+          "masterGain": 0.72,
+          "pitchMultiplier": 2,
+          "waveformCycle": [
+            "sine",
+            "triangle",
+            "sine"
+          ],
+          "filter": {
+            "type": "lowpass",
+            "startHz": 720,
+            "stepHz": 110
+          },
+          "attackMaxSeconds": 0.18,
+          "attackDurationRatio": 0.22,
+          "tailSeconds": 0.03,
+          "loop": true,
+          "loopGapSeconds": 0.4,
+          "stereo": "center"
+        },
+        "events": [
+          {
+            "at": 0,
+            "duration": 1.2,
+            "ratio": 1,
+            "amplitude": 0.1,
+            "source": "entrance"
+          },
+          {
+            "at": 1.5,
+            "duration": 1,
+            "ratio": 1.25,
+            "amplitude": 0.08,
+            "source": "path"
+          },
+          {
+            "at": 2.8,
+            "duration": 1.4,
+            "ratio": 1.5,
+            "amplitude": 0.09,
+            "source": "pattern"
+          },
+          {
+            "at": 4.6,
+            "duration": 1.2,
+            "ratio": 1.333333,
+            "amplitude": 0.08,
+            "source": "participant"
+          },
+          {
+            "at": 6.2,
+            "duration": 1.5,
+            "ratio": 1.875,
+            "amplitude": 0.08,
+            "source": "adaptation"
+          },
+          {
+            "at": 8.2,
+            "duration": 1.8,
+            "ratio": 1,
+            "amplitude": 0.1,
+            "source": "inhabitation"
+          }
+        ]
+      },
+      "collection_id": "root-logos-expressions"
+    },
+    {
       "id": "root-logos-library-composition",
-      "title": "Root Logos \u2014 Library Composition",
+      "title": "Root Logos — Library Composition",
       "branch": "Root Logos / Library",
       "kind": "library composition",
       "collection": {
@@ -679,7 +1092,7 @@
             "amplitude": 0.0196,
             "beats": 1,
             "rest": false,
-            "provenance": "Great Founder Theory + The Notebooks of Leonardo da Vinci \u2014 Complete / coherence"
+            "provenance": "Great Founder Theory + The Notebooks of Leonardo da Vinci — Complete / coherence"
           },
           {
             "frequency": 123.842,
@@ -958,7 +1371,7 @@
             "amplitude": 0.051,
             "beats": 1,
             "rest": false,
-            "provenance": "A Mathematical Theory of Communication + The Notebooks of Leonardo da Vinci \u2014 Complete / continuity"
+            "provenance": "A Mathematical Theory of Communication + The Notebooks of Leonardo da Vinci — Complete / continuity"
           },
           {
             "frequency": 293.333,
@@ -1426,7 +1839,7 @@
             "amplitude": 0.0353,
             "beats": 0.5,
             "rest": false,
-            "provenance": "Original Douay-Rheims Catholic Canon + The Notebooks of Leonardo da Vinci \u2014 Complete / counterpoint"
+            "provenance": "Original Douay-Rheims Catholic Canon + The Notebooks of Leonardo da Vinci — Complete / counterpoint"
           },
           {
             "frequency": 214.303,
@@ -1894,7 +2307,7 @@
             "amplitude": 0.054,
             "beats": 2,
             "rest": false,
-            "provenance": "The Notebooks of Leonardo da Vinci \u2014 Complete + Sonnets and Madrigals of Michelangelo Buonarroti / recurrence"
+            "provenance": "The Notebooks of Leonardo da Vinci — Complete + Sonnets and Madrigals of Michelangelo Buonarroti / recurrence"
           },
           {
             "frequency": 101.041,
@@ -4428,7 +4841,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:s\u016btra"
+            "provenance": "lexicon:sūtra"
           },
           {
             "frequency": 733.33348,
@@ -4770,7 +5183,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:s\u016btra"
+            "provenance": "lexicon:sūtra"
           },
           {
             "frequency": 495,
@@ -8923,7 +9336,7 @@
             "amplitude": 0.12,
             "beats": 1,
             "rest": false,
-            "provenance": "lexicon:i\u2019ll"
+            "provenance": "lexicon:i’ll"
           },
           {
             "frequency": 220,
@@ -9265,7 +9678,7 @@
             "amplitude": 0.12,
             "beats": 1,
             "rest": false,
-            "provenance": "lexicon:i\u2019ll"
+            "provenance": "lexicon:i’ll"
           },
           {
             "frequency": 330,
@@ -9758,7 +10171,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:i\u2019ll"
+            "provenance": "lexicon:i’ll"
           },
           {
             "frequency": 495,
@@ -9790,7 +10203,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": true,
-            "provenance": "lexicon:\u2019tis"
+            "provenance": "lexicon:’tis"
           },
           {
             "frequency": 206.25,
@@ -10100,7 +10513,7 @@
             "amplitude": 0.12,
             "beats": 2,
             "rest": false,
-            "provenance": "lexicon:i\u2019ll"
+            "provenance": "lexicon:i’ll"
           },
           {
             "frequency": 733.33348,
@@ -10132,7 +10545,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:\u2019tis"
+            "provenance": "lexicon:’tis"
           },
           {
             "frequency": 165,
@@ -12979,7 +13392,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:flu\u00df"
+            "provenance": "lexicon:fluß"
           },
           {
             "frequency": 880,
@@ -13321,7 +13734,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:flu\u00df"
+            "provenance": "lexicon:fluß"
           },
           {
             "frequency": 586.66652,
@@ -13781,7 +14194,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:one\u2019s"
+            "provenance": "lexicon:one’s"
           },
           {
             "frequency": 440,
@@ -14123,7 +14536,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:one\u2019s"
+            "provenance": "lexicon:one’s"
           },
           {
             "frequency": 206.25,
@@ -15805,7 +16218,7 @@
             "amplitude": 0.12,
             "beats": 1,
             "rest": true,
-            "provenance": "lexicon:popper\u2019s"
+            "provenance": "lexicon:popper’s"
           },
           {
             "frequency": 366.66674,
@@ -16147,7 +16560,7 @@
             "amplitude": 0.12,
             "beats": 1,
             "rest": false,
-            "provenance": "lexicon:popper\u2019s"
+            "provenance": "lexicon:popper’s"
           },
           {
             "frequency": 247.5,
@@ -25288,7 +25701,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:ch\u2019i"
+            "provenance": "lexicon:ch’i"
           },
           {
             "frequency": 366.6667,
@@ -25305,7 +25718,7 @@
             "amplitude": 0.12,
             "beats": 1,
             "rest": false,
-            "provenance": "lexicon:enemy\u2019s"
+            "provenance": "lexicon:enemy’s"
           },
           {
             "frequency": 220,
@@ -25451,7 +25864,7 @@
             "amplitude": 0.12,
             "beats": 2,
             "rest": false,
-            "provenance": "lexicon:ts\u2019ao"
+            "provenance": "lexicon:ts’ao"
           },
           {
             "frequency": 733.33348,
@@ -25508,7 +25921,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:ch\u2019en"
+            "provenance": "lexicon:ch’en"
           },
           {
             "frequency": 660,
@@ -25630,7 +26043,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:ch\u2019i"
+            "provenance": "lexicon:ch’i"
           },
           {
             "frequency": 366.6667,
@@ -25647,7 +26060,7 @@
             "amplitude": 0.12,
             "beats": 1,
             "rest": false,
-            "provenance": "lexicon:enemy\u2019s"
+            "provenance": "lexicon:enemy’s"
           },
           {
             "frequency": 330,
@@ -25793,7 +26206,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:ts\u2019ao"
+            "provenance": "lexicon:ts’ao"
           },
           {
             "frequency": 495,
@@ -25850,7 +26263,7 @@
             "amplitude": 0.12,
             "beats": 0.5,
             "rest": false,
-            "provenance": "lexicon:ch\u2019en"
+            "provenance": "lexicon:ch’en"
           },
           {
             "frequency": 440,
@@ -36987,7 +37400,7 @@
     },
     {
       "id": "root-logos-work-the-notebooks-of-leonardo-da-vinci-complete-359e73f1",
-      "title": "The Notebooks of Leonardo da Vinci \u2014 Complete",
+      "title": "The Notebooks of Leonardo da Vinci — Complete",
       "branch": "Root Logos / Renaissance Inquiry",
       "kind": "notebooks of art, science, engineering, and natural philosophy voice",
       "collection": {
