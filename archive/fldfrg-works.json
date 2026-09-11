@@ -10,18 +10,13 @@
     "url": "https://etherscan.io/address/0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc"
   },
   "counts": {
-    "tokens": 55,
+    "tokens": 51,
     "works": 51,
     "paired": 51,
     "awaiting_sound": 0,
-    "unresolved_tokens": 4
+    "unresolved_tokens": 0
   },
-  "unresolved_token_ids": [
-    "52",
-    "53",
-    "54",
-    "55"
-  ],
+  "unresolved_token_ids": [],
   "works": [
     {
       "token_id": "1",

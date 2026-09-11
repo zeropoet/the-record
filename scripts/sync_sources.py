@@ -76,7 +76,6 @@ def build_fldfrg_record(archive: dict, contract: dict, tokens: list[tuple[str, d
     for token_id, metadata, image in tokens:
         token_name = str(metadata.get("name", "")).strip()
         if re.fullmatch(r"(?:token\s*#?)?\d+", token_name, re.IGNORECASE):
-            unresolved_tokens.append(token_id)
             continue
         sound = library.get(work_key(metadata.get("name", "")))
         image_name = f"{int(token_id):03d}.png"
@@ -104,7 +103,7 @@ def build_fldfrg_record(archive: dict, contract: dict, tokens: list[tuple[str, d
             "url": f"https://etherscan.io/address/{contract['address']}",
         },
         "counts": {
-            "tokens": len(tokens),
+            "tokens": len(works),
             "works": len(works),
             "paired": paired,
             "awaiting_sound": len(works) - paired,
@@ -210,10 +209,14 @@ def sync_fldfrg(archive: dict, local_contract_root=None) -> dict:
         if local_contract_root:
             token_root = local_contract_root / "tokens" / str(token_id)
             metadata = read_json(token_root / "metadata.json")
+            if re.fullmatch(r"(?:token\s*#?)?\d+", str(metadata.get("name", "")).strip(), re.IGNORECASE):
+                continue
             image = (token_root / (metadata.get("media") or {}).get("file", "image.png")).read_bytes()
         else:
             token_url = f"{base}/tokens/{token_id}"
             metadata = load_remote(f"{token_url}/metadata.json")
+            if re.fullmatch(r"(?:token\s*#?)?\d+", str(metadata.get("name", "")).strip(), re.IGNORECASE):
+                continue
             media_path = (metadata.get("media") or {}).get("path")
             if not media_path or not media_path.startswith("/ethereum-archive/"):
                 raise ValueError(f"FLDFRG token {token_id} has no canonical image path")

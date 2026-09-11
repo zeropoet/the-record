@@ -11,9 +11,9 @@ assert.equal(contract.schema, "the-record-fldfrg-contract/v1");
 assert.equal(contract.contract.symbol, "FLDFRG");
 assert.equal(contract.contract.address, "0x16bc29ea6e1b9390f70349bfb93ea87ffc9105fc");
 assert.equal(contract.works.length, 51);
-assert.equal(contract.counts.tokens, 55);
-assert.equal(contract.counts.unresolved_tokens, 4);
-assert.equal(readdirSync(resolve(root, "archive/fldfrg")).filter((name) => !name.startsWith(".")).length, 55);
+assert.equal(contract.counts.tokens, 51);
+assert.equal(contract.counts.unresolved_tokens, 0);
+assert.equal(readdirSync(resolve(root, "archive/fldfrg")).filter((name) => !name.startsWith(".")).length, 51);
 assert.equal(new Set(contract.works.map((work) => work.token_id)).size, contract.works.length);
 assert.equal(contract.counts.paired + contract.counts.awaiting_sound, contract.counts.works);
 

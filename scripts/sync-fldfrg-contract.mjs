@@ -62,10 +62,7 @@ const works = readdirSync(join(contractRoot, "tokens"), { withFileTypes: true })
     const imagePath = join(outputRoot, imageName);
     copyFileSync(sourceImage, imagePath);
     const imageSha256 = createHash("sha256").update(readFileSync(imagePath)).digest("hex");
-    if (/^(?:token\s*#?)?\d+$/i.test(String(metadata.name || "").trim())) {
-      unresolvedTokenIds.push(tokenId);
-      return null;
-    }
+    if (/^(?:token\s*#?)?\d+$/i.test(String(metadata.name || "").trim())) return null;
     const tokenKey = aliases.get(slug(metadata.name)) || slug(metadata.name);
     const sound = libraryKeys.get(tokenKey) || null;
     return {
@@ -94,7 +91,7 @@ const payload = {
     url: "https://etherscan.io/address/" + contract.address,
   },
   counts: {
-    tokens: contract.token_ids.length,
+    tokens: works.length,
     works: works.length,
     paired: works.filter((work) => work.paired).length,
     awaiting_sound: works.filter((work) => !work.paired).length,
