@@ -303,10 +303,6 @@ function renderOperators() {
     if (state.filter === "system") return entry.collection_id !== "root-logos-works";
     return true;
   });
-  document.querySelector("#record-count").textContent = String(playable.length).padStart(2, "0");
-  document.querySelector("#contract-count").textContent = String(state.contract.counts.works).padStart(2, "0");
-  document.querySelector("#paired-count").textContent = String(state.contract.counts.paired).padStart(2, "0");
-  document.querySelector("#contract-link").href = state.contract.contract.url;
   document.body.classList.toggle("images-hidden", !state.visuals);
   visualToggle.textContent = state.visuals ? "Images on" : "Images off";
   visualToggle.setAttribute("aria-pressed", String(state.visuals));
